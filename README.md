@@ -1,12 +1,17 @@
-# NutriDía v5
+# NutriDía · Calculadora nutricional
 
-Aplicación web progresiva para registro nutricional diario.
+Aplicación web móvil para registrar alimentos, calcular calorías/macros y seguir objetivos.
 
-## Publicar
-Sube `index.html`, `manifest.webmanifest`, `sw.js` e `icon.svg` a la raíz del repositorio de GitHub Pages y confirma los cambios. El service worker usa la caché `nutridia-shell-v5` para forzar la renovación de los recursos de interfaz.
+## Datos locales y recuperación
 
-## Privacidad
-Perfil, objetivos, tema, catálogo consultado y registro diario se guardan en `localStorage` del navegador/dispositivo. No se envían al repositorio de GitHub Pages. Las consultas de productos sí se envían a las APIs externas configuradas en la app. Borrar datos de Safari puede eliminar registros; usar copia de seguridad antes de cambiar de dispositivo.
+El perfil, los objetivos, el diario, los cierres de día, el tema, los alimentos personalizados y el catálogo consultado se guardan automáticamente en el almacenamiento local del navegador. Al volver a abrir la misma URL en el mismo navegador, se vuelven a cargar.
 
-## Estimaciones
-El gasto energético es una estimación orientativa basada en Mifflin–St Jeor y factores de actividad seleccionados por el usuario. No constituye consejo médico ni garantiza un peso futuro. Revisar la evolución real y consultar a profesionales en caso de necesidades clínicas.
+Esto no es sincronización en la nube: borrar los datos del sitio, usar otro navegador/dispositivo o algunas operaciones de privacidad pueden eliminar los datos locales. En Mi perfil, usa **Guardar copia de seguridad** y guarda el JSON en Archivos/iCloud Drive. Para recuperar, abre NutriDía y usa **Recuperar perfil y datos** para importar esa copia. La restauración sustituye los datos actuales por los de la copia.
+
+## Publicación
+
+Sube `index.html`, `manifest.webmanifest`, `sw.js` e `icon.svg` a la raíz de un repositorio GitHub Pages y activa Pages desde la rama `main` y carpeta `/root`.
+
+## Catálogo
+
+El catálogo se consulta en fuentes externas no oficiales/colaborativas. La disponibilidad y la cobertura pueden cambiar.

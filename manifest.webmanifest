@@ -1,13 +1,12 @@
 {
-  "name": "NutriDía · Calculadora nutricional",
+  "name": "NutriDía",
   "short_name": "NutriDía",
-  "description": "Calculadora diaria de calorías y macronutrientes con búsqueda de alimentos y productos de marca.",
-  "lang": "es-ES",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#fff7f1",
-  "theme_color": "#c65a19",
+  "background_color": "#FFF8F3",
+  "theme_color": "#D98F68",
+  "description": "Registro personal de alimentación y objetivos nutricionales",
   "icons": [
     {
       "src": "icon.svg",
