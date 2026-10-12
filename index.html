@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#F6DFD1">
   <meta name="description" content="Calculadora diaria de calorías y macronutrientes con búsqueda de alimentos y productos de marca.">
   <title>NutriDía · Calculadora nutricional</title>
-  <meta name="app-version" content="10.0.0">
+  <meta name="app-version" content="11.0.0">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <style>
@@ -29,6 +29,10 @@
     .goal-summary-item{padding:10px 0;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
     .goal-summary-item strong{font-size:15px;color:var(--ink);text-align:right}
     @media(max-width:650px){.tabbar{margin:0 auto 14px;padding:8px 8px;gap:3px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));overflow:visible;align-items:stretch;width:100%}.tab-btn{min-width:0;width:100%;padding:10px 3px;font-size:clamp(10px,2.8vw,12px);line-height:1.2;white-space:normal;text-align:center;display:flex;align-items:center;justify-content:center;overflow-wrap:anywhere}.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.intro{align-items:flex-start;flex-direction:column}.date-wrap{width:100%;max-width:240px}.lower-grid{grid-template-columns:1fr}.manual-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.theme-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.profile-card{padding:13px}.search-row{align-items:stretch}.search-row .btn{padding:10px}.product-result{grid-template-columns:minmax(0,1fr) auto;gap:8px}.result-right{min-width:66px}}
+
+    /* Calendario de seguimiento: cuadrícula real de siete columnas, optimizada para iPhone */
+    .calendar-card{min-width:0;overflow:hidden}.calendar-card>.section-head{align-items:flex-start;gap:12px;flex-wrap:wrap}.calendar-card .section-head>div:first-child{flex:1 1 100%;min-width:0}.calendar-controls{display:grid;grid-template-columns:38px minmax(0,1fr) 38px;align-items:center;gap:7px;width:100%;max-width:330px;margin-left:auto}.calendar-controls strong{text-align:center;text-transform:capitalize;font-size:14px;line-height:1.25;overflow-wrap:anywhere}.calendar-controls .btn{min-width:38px;min-height:38px;padding:6px;font-size:20px}.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;width:100%;margin:15px 0 12px;align-items:stretch}.calendar-weekday{display:grid;place-items:center;min-width:0;padding:5px 0;color:var(--muted);font-size:11px;font-weight:800}.calendar-day{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0;min-height:39px;padding:4px 1px;border:1px solid transparent;border-radius:11px;background:var(--lime);color:var(--ink);font-size:13px;line-height:1.1}.calendar-day .num{font-weight:750}.calendar-day .mark{font-size:10px;line-height:1;min-height:10px}.calendar-day.empty-cell{background:transparent;border-color:transparent;pointer-events:none}.calendar-day.selected{border-color:var(--green2);box-shadow:inset 0 0 0 1px var(--green2)}.calendar-day.ok{background:#E4F4E8;color:#236A3B}.calendar-day.bad{background:#FBE5E4;color:#A83B3B}.calendar-day.pending{background:#FFF0D7;color:#8B641E}.calendar-legend{display:flex;flex-wrap:wrap;gap:8px 14px;color:var(--muted);font-size:11px}.calendar-legend span{white-space:nowrap}
+    @media(max-width:650px){.calendar-card{padding:14px}.calendar-grid{gap:4px}.calendar-day{min-height:37px;border-radius:9px;font-size:12px}.calendar-day .mark{font-size:9px}.calendar-controls{max-width:none}.calendar-controls strong{font-size:13px}}
 </style>
 </head>
 <body>
@@ -149,6 +153,13 @@
           <button class="theme-choice" data-theme="peach" type="button"><span style="background:#FDE9DE"></span>Albaricoque</button>
           <button class="theme-choice" data-theme="mint" type="button"><span style="background:#E2F4EF"></span>Menta</button>
           <button class="theme-choice" data-theme="lilac" type="button"><span style="background:#EFEDFC"></span>Lila suave</button>
+          <button class="theme-choice" data-theme="sky" type="button"><span style="background:#DFF4FA"></span>Azul hielo</button>
+          <button class="theme-choice" data-theme="lemon" type="button"><span style="background:#F7F6CE"></span>Limón suave</button>
+          <button class="theme-choice" data-theme="coral" type="button"><span style="background:#FADDD8"></span>Coral claro</button>
+          <button class="theme-choice" data-theme="periwinkle" type="button"><span style="background:#E4E7FA"></span>Azul lavanda</button>
+          <button class="theme-choice" data-theme="pistachio" type="button"><span style="background:#E8F1D5"></span>Pistacho</button>
+          <button class="theme-choice" data-theme="sand" type="button"><span style="background:#F0E4D1"></span>Arena</button>
+          <button class="theme-choice" data-theme="berry" type="button"><span style="background:#F3DFEB"></span>Frambuesa suave</button>
         </div><p id="themeStatus" class="panel-kicker" aria-live="polite">Elige tu tono pastel favorito.</p>
       </div>
 
@@ -411,14 +422,21 @@ La fórmula y los multiplicadores son aproximaciones; contrasta con la evolució
         yellow:['#FCF4D9','#A18D50','#FFF9E8','#FFFDF8','#FFFFFF'],
         peach:['#FDE9DE','#B8846C','#FFF3EA','#FFFCF9','#FFFFFF'],
         mint:['#E2F4EF','#699A8F','#F0FAF7','#FAFDFC','#FFFFFF'],
-        lilac:['#EFEDFC','#827EB4','#F7F6FF','#FCFBFF','#FFFFFF']
+        lilac:['#EFEDFC','#827EB4','#F7F6FF','#FCFBFF','#FFFFFF'],
+        sky:['#DFF4FA','#669BAA','#EFFBFD','#FAFEFF','#FFFFFF'],
+        lemon:['#F7F6CE','#96934D','#FCFBE7','#FFFEF7','#FFFFFF'],
+        coral:['#FADDD8','#B97870','#FFF0ED','#FFFBFA','#FFFFFF'],
+        periwinkle:['#E4E7FA','#7B83B8','#F3F4FE','#FCFCFF','#FFFFFF'],
+        pistachio:['#E8F1D5','#7D9561','#F4F8E9','#FCFDF9','#FFFFFF'],
+        sand:['#F0E4D1','#9A8062','#F8F1E7','#FFFCF7','#FFFFFF'],
+        berry:['#F3DFEB','#A56F91','#FBF0F7','#FFFCFE','#FFFFFF']
       };
       if(!themes[theme])theme='orange';
       const t=themes[theme],root=document.documentElement;
       root.style.setProperty('--green',t[0]);root.style.setProperty('--green2',t[1]);root.style.setProperty('--lime',t[2]);root.style.setProperty('--bg',t[3]);root.style.setProperty('--paper',t[4]);
       const metaTheme=document.querySelector('meta[name="theme-color"]');if(metaTheme)metaTheme.setAttribute('content',t[0]);
       appTheme=theme;document.querySelectorAll('[data-theme]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.theme===theme)));
-      const labels={orange:'melocotón',blue:'azul cielo',purple:'lavanda',green:'salvia',rose:'rosa palo',yellow:'vainilla',peach:'albaricoque',mint:'menta',lilac:'lila suave'};
+      const labels={orange:'melocotón',blue:'azul cielo',purple:'lavanda',green:'salvia',rose:'rosa palo',yellow:'vainilla',peach:'albaricoque',mint:'menta',lilac:'lila suave',sky:'azul hielo',lemon:'limón suave',coral:'coral claro',periwinkle:'azul lavanda',pistachio:'pistacho',sand:'arena',berry:'frambuesa suave'};
       if($('themeStatus'))$('themeStatus').textContent=`Tono ${labels[theme]} seleccionado.`;
       if(saveIt){save(THEME_KEY,theme);}
     }

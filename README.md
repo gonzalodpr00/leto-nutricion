@@ -15,3 +15,8 @@ Sube a la raíz del repositorio existente los cuatro archivos: `index.html`, `ma
 
 ## Datos y privacidad
 La información personal se guarda en el almacenamiento del navegador para ese dominio/dispositivo y no se sube a GitHub. Si borras los datos del sitio, cambias de navegador o dispositivo, puede hacer falta restaurar la copia JSON. Conviene guardar periódicamente esa copia en Archivos/iCloud Drive. Las búsquedas nutricionales consultan fuentes externas y envían el texto buscado. MercaAPI no es oficial y Open Food Facts es colaborativa; comprobar etiquetas para datos críticos.
+
+
+## v11
+- Corrige el calendario mensual en móvil con una cuadrícula de siete columnas y controles de mes centrados.
+- Amplía la selección de temas hasta 15 tonos pastel.
