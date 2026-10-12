@@ -1,0 +1,14 @@
+{
+  "name": "Leto · Nutrición Mercadona",
+  "short_name": "Leto",
+  "description": "Calculadora diaria de calorías y macronutrientes con productos de Mercadona.",
+  "lang": "es-ES",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f6f0",
+  "theme_color": "#102b22",
+  "icons": [
+    {"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
