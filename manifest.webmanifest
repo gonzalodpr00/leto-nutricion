@@ -4,9 +4,9 @@
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#FFF8F3",
-  "theme_color": "#D98F68",
-  "description": "Registro personal de alimentación y objetivos nutricionales",
+  "background_color": "#FFFAF7",
+  "theme_color": "#FCE7DA",
+  "description": "Registro personal de alimentación y seguimiento nutricional",
   "icons": [
     {
       "src": "icon.svg",

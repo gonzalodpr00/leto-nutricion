@@ -1,5 +1,25 @@
-const CACHE = 'nutridia-v8-clean-tabs';
+const CACHE = 'nutridia-v10-pastel-clean';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon.svg'];
-self.addEventListener('install', event => { event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting())); });
-self.addEventListener('activate', event => { event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith('nutridia-v') && key !== CACHE).map(key => caches.delete(key)))).then(() => self.clients.claim())); });
-self.addEventListener('fetch', event => { const url = new URL(event.request.url); if (url.origin !== self.location.origin) return; event.respondWith(caches.match(event.request).then(cached => cached || fetch(event.request).then(response => { if (response && response.ok && event.request.method === 'GET') { const clone = response.clone(); caches.open(CACHE).then(cache => cache.put(event.request, clone)); } return response; }).catch(() => caches.match('./index.html')))); });
+self.addEventListener('install', event => {
+  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting()));
+});
+self.addEventListener('activate', event => {
+  event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith('nutridia-v') && key !== CACHE).map(key => caches.delete(key)))).then(() => self.clients.claim()));
+});
+self.addEventListener('fetch', event => {
+  const req = event.request;
+  const url = new URL(req.url);
+  if (url.origin !== self.location.origin || req.method !== 'GET') return;
+  const isDocument = req.mode === 'navigate' || url.pathname.endsWith('/index.html') || url.pathname.endsWith('/');
+  if (isDocument) {
+    event.respondWith(fetch(req, { cache: 'no-store' }).then(response => {
+      if (response && response.ok) caches.open(CACHE).then(cache => cache.put('./index.html', response.clone()));
+      return response;
+    }).catch(async () => (await caches.match(req)) || (await caches.match('./index.html'))));
+    return;
+  }
+  event.respondWith(caches.match(req).then(cached => cached || fetch(req).then(response => {
+    if (response && response.ok) caches.open(CACHE).then(cache => cache.put(req, response.clone()));
+    return response;
+  })));
+});

@@ -1,17 +1,17 @@
-# NutriDía · Calculadora nutricional
+# NutriDía v10 — versión final para publicar
 
-Aplicación web móvil para registrar alimentos, calcular calorías/macros y seguir objetivos.
-
-## Datos locales y recuperación
-
-El perfil, los objetivos, el diario, los cierres de día, el tema, los alimentos personalizados y el catálogo consultado se guardan automáticamente en el almacenamiento local del navegador. Al volver a abrir la misma URL en el mismo navegador, se vuelven a cargar.
-
-Esto no es sincronización en la nube: borrar los datos del sitio, usar otro navegador/dispositivo o algunas operaciones de privacidad pueden eliminar los datos locales. En Mi perfil, usa **Guardar copia de seguridad** y guarda el JSON en Archivos/iCloud Drive. Para recuperar, abre NutriDía y usa **Recuperar perfil y datos** para importar esa copia. La restauración sustituye los datos actuales por los de la copia.
+## Qué cambia
+- Solo cuatro pestañas: Balance diario, Comidas, Historial y Mi perfil.
+- Paletas pastel suaves; la elección de color está dentro de Mi perfil.
+- Se elimina por completo la tarjeta «Mis objetivos diarios». La única meta visible en Balance es la meta energética calculada desde Mi perfil, al final del balance.
+- Comidas muestra primero los alimentos registrados y debajo el buscador.
+- Historial incorpora calendario con ✓ dentro del rango, ✕ fuera del rango y ○ pendiente; el listado explica por qué un día cerrado queda fuera del rango.
+- Perfil, diario, catálogo, preferencias y cierres se guardan en localStorage del mismo origen de GitHub Pages. «Guardar copia de seguridad» descarga un JSON completo y «Recuperar perfil y datos» lo importa.
+- Se conserva el nombre de las claves locales anteriores para preservar registros de versiones previas. El service worker se versiona para actualizar la caché.
+- Se evita la descarga automática masiva de catálogo al abrir. La búsqueda online consulta MercaAPI y Open Food Facts; los resultados consultados se guardan localmente. «Actualizar base de datos» refresca solo una muestra local acotada para evitar saturar el almacenamiento del iPhone.
 
 ## Publicación
+Sube a la raíz del repositorio existente los cuatro archivos: `index.html`, `manifest.webmanifest`, `sw.js` e `icon.svg`, y confirma el commit. GitHub Pages reutilizará la URL actual.
 
-Sube `index.html`, `manifest.webmanifest`, `sw.js` e `icon.svg` a la raíz de un repositorio GitHub Pages y activa Pages desde la rama `main` y carpeta `/root`.
-
-## Catálogo
-
-El catálogo se consulta en fuentes externas no oficiales/colaborativas. La disponibilidad y la cobertura pueden cambiar.
+## Datos y privacidad
+La información personal se guarda en el almacenamiento del navegador para ese dominio/dispositivo y no se sube a GitHub. Si borras los datos del sitio, cambias de navegador o dispositivo, puede hacer falta restaurar la copia JSON. Conviene guardar periódicamente esa copia en Archivos/iCloud Drive. Las búsquedas nutricionales consultan fuentes externas y envían el texto buscado. MercaAPI no es oficial y Open Food Facts es colaborativa; comprobar etiquetas para datos críticos.
