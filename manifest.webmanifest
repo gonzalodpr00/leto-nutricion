@@ -1,7 +1,7 @@
 {
-  "name": "Leto · Nutrición Mercadona",
-  "short_name": "Leto",
-  "description": "Calculadora diaria de calorías y macronutrientes con productos de Mercadona.",
+  "name": "NutriDía · Calculadora nutricional",
+  "short_name": "NutriDía",
+  "description": "Calculadora diaria de calorías y macronutrientes con búsqueda de alimentos y productos de marca.",
   "lang": "es-ES",
   "start_url": "./",
   "scope": "./",
@@ -9,6 +9,11 @@
   "background_color": "#fff7f1",
   "theme_color": "#c65a19",
   "icons": [
-    {"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
   ]
 }

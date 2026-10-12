@@ -1,0 +1,1 @@
+NutriDía es una calculadora nutricional personal. La búsqueda consulta el catálogo local, MercaAPI (no oficial) y Open Food Facts. Open Food Facts es una base colaborativa de productos y sus datos pueden estar incompletos; revisa la etiqueta. La navegación “Ver todos los alimentos cargados” muestra alimentos guardados localmente y resultados online consultados anteriormente.
