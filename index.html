@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#F6DFD1">
   <meta name="description" content="Calculadora diaria de calorías y macronutrientes con búsqueda de alimentos y productos de marca.">
   <title>NutriDía · Calculadora nutricional</title>
-  <meta name="app-version" content="12.0.0">
+  <meta name="app-version" content="13.0.0">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -134,6 +134,40 @@
       .toast{bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 16px)}
     }
     @media(max-width:390px){.tab-btn{font-size:10px}}
+    /* ===== v13 ===== */
+    .seg{display:inline-flex;gap:3px;padding:3px;border-radius:12px;background:var(--lime)}
+    .seg button{border:0;background:transparent;color:var(--muted);font-weight:700;font-size:12px;padding:7px 12px;border-radius:9px;min-height:34px}
+    .seg button[aria-pressed="true"]{background:var(--paper);color:var(--green2);box-shadow:0 1px 4px rgba(40,25,15,.08)}
+    .quick-list{display:grid;gap:8px;margin-top:12px}
+    .qty-wrap{display:flex;gap:5px;align-items:center}
+    .qty-wrap .grams-input{width:64px}
+    .portion-select{max-width:132px;min-height:35px;padding:6px 7px;border:1px solid rgba(60,40,30,.13);border-radius:9px;background:var(--paper);font-size:12px;color:var(--ink)}
+    .star-btn{width:31px;height:31px;border:1px solid var(--hair);background:var(--paper);border-radius:9px;color:#b9aca3;font-size:16px;display:grid;place-items:center;line-height:1}
+    .star-btn.on{color:#D9A02B;border-color:#F1D9A6;background:#FFF8E6}
+    .meal-heading .heading-actions{display:flex;align-items:center;gap:8px}
+    .link-btn{border:0;background:transparent;color:var(--green2);font-weight:750;font-size:11px;padding:4px 2px;text-transform:none;letter-spacing:0}
+    .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:12px}
+    .stat{background:var(--lime);border-radius:14px;padding:11px 12px;min-width:0}
+    .stat small{display:block;color:var(--muted);font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+    .stat strong{display:block;font-size:20px;font-weight:800;letter-spacing:-.5px;margin-top:3px;font-variant-numeric:tabular-nums}
+    .stat span{font-size:11px;color:var(--muted)}
+    .chart{width:100%;height:auto;display:block;margin-top:12px}
+    .chart text{font-size:10px;fill:var(--muted);font-family:inherit}
+    .water-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}
+    .water-value{font-size:26px;font-weight:800;letter-spacing:-.8px;font-variant-numeric:tabular-nums}
+    .water-btns{display:flex;gap:6px}
+    .modal{position:fixed;inset:0;z-index:2000;background:rgba(20,14,10,.55);display:none;align-items:flex-end;justify-content:center;padding:0}
+    .modal.open{display:flex}
+    .modal-card{background:var(--paper);width:min(520px,100%);border-radius:22px 22px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom));box-shadow:var(--shadow-lg);max-height:92vh;overflow:auto}
+    @media(min-width:651px){.modal{align-items:center}.modal-card{border-radius:22px}}
+    .scan-video-wrap{position:relative;border-radius:16px;overflow:hidden;background:#111;aspect-ratio:4/3;margin-top:12px}
+    .scan-video-wrap video{width:100%;height:100%;object-fit:cover;display:block}
+    .scan-frame{position:absolute;left:12%;right:12%;top:32%;bottom:32%;border:2px solid rgba(255,255,255,.9);border-radius:12px;box-shadow:0 0 0 999px rgba(0,0,0,.28)}
+    .weight-row{display:flex;gap:8px;align-items:flex-end;margin-top:10px}
+    .weight-row .field{flex:1}
+    .tdee-box{margin-top:12px}
+    @media(max-width:650px){.product-result{grid-template-columns:1fr!important;gap:8px}.result-right{display:flex!important;flex-wrap:wrap;align-items:center;gap:4px 8px;text-align:left!important;min-width:0}.result-right .add-controls{flex-basis:100%;margin-top:4px}.add-controls{flex-wrap:nowrap}.entry{grid-template-columns:1fr!important}.entry-controls{justify-content:flex-start!important}.entry-kcal{margin-right:auto;text-align:left}.entry-weight input{width:70px!important}.meal-heading{flex-wrap:wrap;gap:4px}.stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.mini-grid{grid-template-columns:1fr}.portion-select{max-width:110px;font-size:16px}.qty-wrap .grams-input{width:58px}}
 </style>
 </head>
 <body>
@@ -182,19 +216,27 @@
         <div class="section-head"><div><h2 class="section-title">Lo que has comido hoy</h2><p class="section-desc">Resumen por comida y total diario.</p></div><button class="btn btn-primary btn-small" id="closeDayBtn" type="button">Cerrar día</button></div>
         <div id="balanceMealsSummary" class="history-list"></div>
         <div id="dayCloseStatus" class="quality-note" style="margin-top:12px">Día pendiente de cerrar. Revisa tu registro al terminar.</div>
-        <div class="profile-card daily-goal-summary"><h3>Tu meta energética</h3><p class="panel-kicker">Calculada a partir de los datos de Mi perfil.</p><div id="balanceGoalSummary" class="goal-summary-grid"></div></div>
+        <div class="mini-grid" style="margin-top:12px"><div class="profile-card" style="margin:0"><h3>Agua</h3><p class="panel-kicker" id="waterGoalLabel">Sin meta definida (ajústala en Mi perfil).</p><div class="water-row"><div class="water-value" id="waterValue">0 ml</div><div class="water-btns"><button class="btn btn-line btn-small" id="waterMinus" type="button" aria-label="Restar 250 ml">−250</button><button class="btn btn-primary btn-small" id="waterPlus" type="button" aria-label="Sumar 250 ml">+250 ml</button></div></div><div class="progress-track"><div class="progress-fill" id="waterProgress" style="background:#7FB3D5"></div></div></div><div class="profile-card" style="margin:0"><h3>Fibra</h3><p class="panel-kicker">Referencia: 25 g/día (ingesta adecuada para adultos, EFSA).</p><div class="water-row"><div class="water-value" id="fiberValue">0 g</div><span class="panel-kicker" id="fiberPct">—</span></div><div class="progress-track"><div class="progress-fill" id="fiberProgress" style="background:var(--fiber)"></div></div><p class="panel-kicker" id="fiberNote"></p></div></div>
+          <div class="profile-card daily-goal-summary"><h3>Tu meta energética</h3><p class="panel-kicker">Calculada a partir de los datos de Mi perfil.</p><div id="balanceGoalSummary" class="goal-summary-grid"></div></div>
       </div>
     </section>
 
-    <section class="section active-screen" data-screen="comidas" aria-labelledby="diaryHeading">
+    <section class="section" data-screen="comidas" aria-labelledby="diaryHeading">
       <div class="section-head"><div><h2 id="diaryHeading" class="section-title">Registro de alimentos</h2><p class="section-desc">Cambia los gramos cuando lo necesites; los totales se actualizarán automáticamente.</p></div></div>
       <div class="diary-card"><div class="diary-top"><strong style="font-size:13px">Alimentos del día</strong><span id="diaryCount" class="diary-count">0 alimentos</span></div><div id="entryList"></div><div id="emptyDiary" class="empty"><div class="empty-icon">＋</div><strong>Tu registro está vacío</strong><p>Busca tu primer producto abajo y añádelo con su peso consumido.</p></div></div>
     </section>
 
+    <section class="section" data-screen="comidas" aria-labelledby="quickHeading">
+      <div class="section-head"><div><h2 id="quickHeading" class="section-title">Accesos rápidos</h2><p class="section-desc">Lo que comes a menudo, a un toque.</p></div></div>
+      <div class="search-panel">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><div class="seg" role="group" aria-label="Accesos rápidos"><button type="button" data-quick="recent" aria-pressed="true">Recientes</button><button type="button" data-quick="fav" aria-pressed="false">Favoritos</button><button type="button" data-quick="recipes" aria-pressed="false">Recetas</button></div><div style="display:flex;gap:6px;align-items:center"><select id="copyMeal" class="meal-select" aria-label="Qué copiar del día anterior"><option value="">Todo el día</option><option>Desayuno</option><option>Comida</option><option>Merienda</option><option>Cena</option><option>Picar entre horas</option></select><button id="copyPrevBtn" class="btn btn-soft btn-small" type="button">Repetir día anterior</button></div></div>
+        <div id="quickList" class="quick-list" aria-live="polite"></div>
+      </div>
+    </section>
     <section class="section" data-screen="comidas" aria-labelledby="searchHeading">
       <div class="section-head"><div><h2 id="searchHeading" class="section-title">Añadir alimentos</h2><p class="section-desc">Busca un producto, indica cuántos gramos has consumido y añádelo al día.</p></div></div>
       <div class="search-panel">
-        <div class="search-row"><input id="searchInput" class="search-input" type="search" autocomplete="off" placeholder="Ej. queso fresco batido, avena, salmón…" aria-label="Buscar producto de Mercadona"><button id="searchBtn" class="btn btn-primary" type="button">Buscar producto</button></div>
+        <div class="search-row"><input id="searchInput" class="search-input" type="search" autocomplete="off" placeholder="Ej. queso fresco batido, avena, salmón…" aria-label="Buscar producto de Mercadona"><button id="searchBtn" class="btn btn-primary" type="button">Buscar producto</button><button id="scanBtn" class="btn btn-soft" type="button" aria-label="Escanear código de barras"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 8v8M10 8v8M13 8v8M17 8v8"/></svg>Escanear</button></div>
         <div class="search-hint"><span id="searchStatus">Busca en el catálogo disponible o introduce un alimento manualmente.</span><div class="search-controls"><label for="mealChoice" class="hidden">Comida</label><select id="mealChoice" class="meal-select"><option>Desayuno</option><option>Comida</option><option>Merienda</option><option>Cena</option><option>Picar entre horas</option></select></div></div>
         <div id="searchResults" class="results" aria-live="polite"></div>
         <details class="profile-card catalog-browser" id="catalogBrowser" style="margin-top:14px;padding:12px 14px">
@@ -225,6 +267,18 @@
 
 
     <section class="section" data-screen="historial" aria-labelledby="historyHeading"><div class="section-head"><div><h2 class="section-title" id="historyHeading">Historial diario</h2><p class="section-desc">Consulta los días que has registrado en este navegador.</p></div></div><div id="historyList" class="history-list"></div><div class="profile-card calendar-card"><div class="section-head"><div><h3 class="section-title">Calendario de seguimiento</h3><p class="section-desc">✓ dentro del rango energético · ✕ fuera del rango · ○ sin cerrar</p></div><div class="calendar-controls"><button id="calendarPrev" class="btn btn-line btn-small" type="button" aria-label="Mes anterior">‹</button><strong id="calendarMonthLabel"></strong><button id="calendarNext" class="btn btn-line btn-small" type="button" aria-label="Mes siguiente">›</button></div></div><div class="calendar-grid" id="historyCalendar"></div><div id="calendarLegend" class="calendar-legend"><span>✓ En rango</span><span>✕ Fuera de rango</span><span>○ Pendiente</span></div></div></section>
+    <section class="section" data-screen="historial" aria-labelledby="statsHeading">
+      <div class="profile-card"><div class="section-head"><div><h3 class="section-title" id="statsHeading">Estadísticas</h3><p class="section-desc">Medias sobre los días con registro dentro del periodo.</p></div><div class="seg" role="group" aria-label="Periodo"><button type="button" data-period="7" aria-pressed="true">7 días</button><button type="button" data-period="30" aria-pressed="false">30 días</button></div></div>
+        <div class="stat-grid" id="statGrid"></div>
+        <div id="kcalChart"></div>
+      </div>
+      <div class="profile-card"><div class="section-head"><div><h3 class="section-title">Peso y gasto real</h3><p class="section-desc">Registra tu peso (mejor en ayunas y a la misma hora). NutriDía compara tu evolución con lo que comes.</p></div></div>
+        <div class="weight-row"><div class="field"><label for="weightInput">Peso del día seleccionado (kg)</label><input id="weightInput" type="number" min="30" max="300" step="0.1" placeholder="Ej. 77,4"></div><button id="weightSaveBtn" class="btn btn-primary" type="button">Guardar peso</button></div>
+        <div id="weightChart"></div>
+        <div id="tdeeBox" class="quality-note tdee-box"></div>
+        <div class="form-actions"><button id="applyTdeeBtn" class="btn btn-soft btn-small hidden" type="button">Aplicar a mi meta energética</button></div>
+      </div>
+    </section>
     <section class="section" data-screen="perfil" aria-labelledby="profileHeading"><div class="section-head"><div><h2 class="section-title" id="profileHeading">Mi perfil</h2><p class="section-desc">Tus datos, meta energética y preferencias.</p></div></div>
       <div class="profile-card"><h3>Tu perfil nutricional</h3><p>Completa tus datos para estimar el gasto energético y una meta inicial. Es una estimación orientativa, no una prescripción clínica.</p>
         <div class="target-grid">
@@ -243,6 +297,9 @@
         <div id="profileEstimate" class="quality-note" style="margin-top:12px">Introduce tus datos para estimar metabolismo basal, mantenimiento y meta energética.</div>
       </div>
 
+      <div class="profile-card"><h3>Metas complementarias</h3><p>Opcionales. Si las dejas vacías, no se muestran como objetivo.</p>
+        <div class="target-grid"><div class="field"><label for="proteinPerKg">Proteína (g por kg de peso)</label><input id="proteinPerKg" type="number" min="0.5" max="3" step="0.1" placeholder="Ej. 1,6"><span class="hint" id="proteinGoalHint">Desactivada</span></div><div class="field"><label for="waterGoalInput">Agua (ml/día)</label><input id="waterGoalInput" type="number" min="500" max="6000" step="100" placeholder="Ej. 2000"><span class="hint">Solo el agua que bebes.</span></div></div>
+      </div>
       <div class="profile-card"><h3>Color de la aplicación</h3><p>Escoge un tono pastel suave. El cambio se guarda en este dispositivo.</p>
         <div class="theme-grid" role="group" aria-label="Temas de color">
           <button class="theme-choice" data-theme="orange" type="button"><span style="background:#FCE7DA"></span>Melocotón</button>
@@ -267,13 +324,18 @@
       <div class="profile-card"><h3>Base de datos de alimentos</h3><p id="profileCatalogStatus">NutriDía busca en el catálogo guardado, en MercaAPI y en Open Food Facts. Open Food Facts es una base colaborativa de productos envasados; la cobertura y exactitud dependen de los datos aportados por sus usuarios.</p><div class="profile-actions"><button id="syncBtn" class="btn btn-primary" type="button">Actualizar base de datos</button></div><div class="status-line" style="margin-top:10px"><span class="status-dot" id="statusDot"></span><span id="catalogStatus">Preparando catálogo…</span><span>·</span><span id="catalogDate">Sin sincronización</span></div></div>
 <div class="profile-card" id="localDataCard"><h3>Guardar y recuperar mis datos</h3><p>Tu perfil, diario, tema, historial y alimentos se guardan automáticamente en este navegador. Si cierras Safari y vuelves a abrir esta misma dirección, se cargará la información guardada. Para recuperarla si borras los datos del sitio o cambias de iPhone, guarda una copia en Archivos o iCloud Drive y restáurala aquí.</p><div class="profile-actions"><button class="btn btn-primary" id="backupBtn" type="button">Guardar copia de seguridad</button><label class="btn btn-line file-label">Recuperar perfil y datos<input id="importBackupInput" type="file" accept=".json,application/json"></label></div><p id="localSaveStatus" class="panel-kicker" aria-live="polite" style="margin-top:10px">Guardado automático local activado. Al volver a abrir esta misma web en Safari, se cargará el perfil guardado.</p></div>
       <details class="utility-details profile-card"><summary>Herramientas avanzadas</summary><div class="utility-row"><button class="btn btn-line btn-small" id="csvBtn" type="button">Exportar día CSV</button><label class="btn btn-line btn-small file-label">Importar catálogo<input id="importCatalogInput" type="file" accept=".json,application/json"></label></div></details>
-      <div class="profile-card"><h3>Privacidad y almacenamiento</h3><p><strong>Perfil, meta energética, historial y diario se guardan automáticamente en este navegador.</strong> No se publican en GitHub Pages. Las búsquedas de productos sí se envían a fuentes externas. Cerrar Safari no borra los datos; eliminar los datos del sitio sí puede hacerlo. Si borras los datos del sitio o cambias de dispositivo, puedes recuperar tus datos con la copia de seguridad. Guarda una copia periódicamente en Archivos o iCloud Drive.</p><p class="panel-kicker">Versión 12 · Guardado local automático</p></div>
+      <div class="profile-card"><h3>Privacidad y almacenamiento</h3><p><strong>Perfil, meta energética, historial y diario se guardan automáticamente en este navegador.</strong> No se publican en GitHub Pages. Las búsquedas de productos sí se envían a fuentes externas. Cerrar Safari no borra los datos; eliminar los datos del sitio sí puede hacerlo. Si borras los datos del sitio o cambias de dispositivo, puedes recuperar tus datos con la copia de seguridad. Guarda una copia periódicamente en Archivos o iCloud Drive.</p><p class="panel-kicker">Versión 13 · Guardado local automático</p></div>
       <div class="quality-note"><strong>Precisión:</strong> los datos dependen de una API independiente. Comprueba la etiqueta del envase cuando necesites exactitud; NutriDía no inventará valores nutricionales que falten.</div>
     </section>
 
 
     <footer class="footnote">NutriDía es una herramienta personal de cálculo nutricional, no un producto oficial de Mercadona ni un servicio médico. Fuentes: <a href="https://mercaapi.sgn.space/api/docs" target="_blank" rel="noopener noreferrer">MercaAPI (no oficial)</a> y <a href="https://openfoodfacts.org/" target="_blank" rel="noopener noreferrer">Open Food Facts</a>, base colaborativa de productos alimentarios. Tus registros se guardan localmente en este navegador. La sincronización en la nube no está configurada; utiliza «Guardar copia de seguridad» para poder restaurarlos.</footer>
   </main>
+  <div class="modal" id="scanModal" role="dialog" aria-modal="true" aria-labelledby="scanTitle"><div class="modal-card">
+    <div class="section-head" style="margin:0"><div><h3 class="section-title" id="scanTitle">Escanear código de barras</h3><p class="section-desc" id="scanStatus">Enfoca el código del envase dentro del recuadro.</p></div><button class="icon-btn" id="scanClose" type="button" aria-label="Cerrar">×</button></div>
+    <div class="scan-video-wrap"><video id="scanVideo" playsinline muted></video><div class="scan-frame"></div></div>
+    <div class="search-row"><input id="eanInput" class="search-input" inputmode="numeric" pattern="[0-9]*" placeholder="O escribe el código (EAN)" aria-label="Código de barras"><button id="eanBtn" class="btn btn-primary" type="button">Buscar</button></div>
+  </div></div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script>
   (() => {
@@ -338,7 +400,7 @@
     function renderSummary() {
       const {totals,missing,count,incomplete}=currentTotals();
       setMetric('totalKcal',totals.kcal,'kcal',goals.kcal,'kcalProgress','kcalLeft','kcalPercent');
-      setMetric('totalProtein',totals.protein,'g',goals.protein,'proteinProgress','proteinLeft','proteinPercent');
+      setMetric('totalProtein',totals.protein,'g',proteinGoalValue(),'proteinProgress','proteinLeft','proteinPercent');
       setMetric('totalCarbs',totals.carbs,'g',goals.carbs,'carbsProgress','carbsLeft','carbsPercent');
       setMetric('totalFat',totals.fat,'g',goals.fat,'fatProgress','fatLeft','fatPercent');
       const available={protein:totals.protein===null?0:totals.protein*4,carbs:totals.carbs===null?0:totals.carbs*4,fat:totals.fat===null?0:totals.fat*9};
@@ -358,25 +420,25 @@
       const entries=currentEntries(); const host=$('entryList'); host.textContent=''; $('emptyDiary').classList.toggle('hidden',entries.length>0);
       const groups=['Desayuno','Comida','Merienda','Cena','Picar entre horas','Sin asignar'];
       for(const group of groups){const rows=entries.map((item,index)=>({...item,_index:index})).filter(item=>(item.meal||'Sin asignar')===group); if(!rows.length) continue;
-        const section=document.createElement('section'); section.className='meal-group'; const title=document.createElement('div'); title.className='meal-heading'; const nm=document.createElement('span'); nm.textContent=group; const sum=document.createElement('span'); const knownKcal=rows.reduce((s,x)=>s+(productTotal(x,'kcal',x.amount)||0),0); sum.textContent=`${fmt(knownKcal,0)} kcal · ${rows.length} ${rows.length===1?'alimento':'alimentos'}`; title.append(nm,sum); section.append(title);
+        const section=document.createElement('section'); section.className='meal-group'; const title=document.createElement('div'); title.className='meal-heading'; const nm=document.createElement('span'); nm.textContent=group; const sum=document.createElement('span'); const knownKcal=rows.reduce((s,x)=>s+(productTotal(x,'kcal',x.amount)||0),0); sum.textContent=`${fmt(knownKcal,0)} kcal · ${rows.length} ${rows.length===1?'alimento':'alimentos'}`; const ha=document.createElement('span');ha.className='heading-actions';const rb=document.createElement('button');rb.type='button';rb.className='link-btn';rb.textContent='Guardar como receta';rb.addEventListener('click',()=>saveMealAsRecipe(group));ha.append(sum,rb);title.append(nm,ha); section.append(title);
         for(const item of rows){const row=document.createElement('div');row.className='entry';const info=document.createElement('div'); const name=document.createElement('div'); name.className='entry-title'; name.textContent=item.name; const sub=document.createElement('div');sub.className='entry-sub';sub.textContent=[item.brand,item.category,item.quality==='declarado'?'Etiqueta declarada':item.quality==='estimado'?'Estimación':'Fuente API sin verificación'].filter(Boolean).join(' · '); const macros=document.createElement('div');macros.className='entry-bottom';for(const [key,label] of [['protein','P'],['carbs','HC'],['fat','G']]){const chip=document.createElement('span');chip.className='macro-mini';const v=productTotal(item,key,item.amount);chip.textContent=`${label} ${v===null?'—':fmt(v,1)+' g'}`;macros.append(chip);}info.append(name,sub,macros);
-          const controls=document.createElement('div');controls.className='entry-controls';const weight=document.createElement('label');weight.className='entry-weight';const grams=document.createElement('input');grams.type='number';grams.min='0.1';grams.max='100000';grams.step='any';grams.value=String(item.amount);grams.setAttribute('aria-label',`Gramos o mililitros de ${item.name}`);grams.addEventListener('change',()=>{const n=cleanNumber(grams.value);if(n===null||n<=0){toast('Introduce una cantidad mayor que cero.');grams.value=item.amount;return;}currentEntries()[item._index].amount=n;persistDiary();renderAll();});weight.append(grams);const unit=document.createElement('small');unit.textContent=item.unit==='ml'?'ml':'g';unit.style.cssText='font-size:10px;color:var(--muted)';weight.append(unit);const kcal=document.createElement('div');kcal.className='entry-kcal';kcal.innerHTML=`${fmt(productTotal(item,'kcal',item.amount),0)}<small>kcal</small>`;const del=document.createElement('button');del.className='icon-btn';del.type='button';del.setAttribute('aria-label',`Eliminar ${item.name}`);del.title='Eliminar alimento';del.textContent='×';del.addEventListener('click',()=>{currentEntries().splice(item._index,1);persistDiary();renderAll();toast('Alimento eliminado.');});controls.append(weight,kcal,del);row.append(info,controls);section.append(row);
+          const controls=document.createElement('div');controls.className='entry-controls';const weight=document.createElement('label');weight.className='entry-weight';const grams=document.createElement('input');grams.type='number';grams.min='0.1';grams.max='100000';grams.step='any';grams.value=String(item.amount);grams.setAttribute('aria-label',`Gramos o mililitros de ${item.name}`);grams.addEventListener('change',()=>{const n=cleanNumber(grams.value);if(n===null||n<=0){toast('Introduce una cantidad mayor que cero.');grams.value=item.amount;return;}currentEntries()[item._index].amount=n;persistDiary();renderAll();});weight.append(grams);const unit=document.createElement('small');unit.textContent=item.unit==='ml'?'ml':'g';unit.style.cssText='font-size:10px;color:var(--muted)';weight.append(unit);const kcal=document.createElement('div');kcal.className='entry-kcal';kcal.innerHTML=`${fmt(productTotal(item,'kcal',item.amount),0)}<small>kcal</small>`;const del=document.createElement('button');del.className='icon-btn';del.type='button';del.setAttribute('aria-label',`Eliminar ${item.name}`);del.title='Eliminar alimento';del.textContent='×';del.addEventListener('click',()=>{currentEntries().splice(item._index,1);persistDiary();renderAll();toast('Alimento eliminado.');});controls.append(weight,kcal,starButton(entryToProduct(item)),del);if(item.portionLabel){const pl=document.createElement('span');pl.className='macro-mini';pl.textContent=item.portionLabel;macros.prepend(pl);}row.append(info,controls);section.append(row);
         }
         host.append(section);
       }
     }
     function renderDateLabel(){const el=$('todayLabel');if(!el)return;const d=new Date(currentDay+'T12:00:00');const label=d.toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'});const nice=label.charAt(0).toUpperCase()+label.slice(1);el.textContent=currentDay===todayLocal()?`Hoy · ${label}`:nice;}
-    function renderAll(){renderDateLabel();renderSummary();renderDiary();renderHistory();syncProfileGoals();renderBalanceMeals();renderGoalSummary();renderCalendar();}
+    function renderAll(){renderDateLabel();renderWaterFiber();renderQuick();renderStats();renderWeight();renderSummary();renderDiary();renderHistory();syncProfileGoals();renderBalanceMeals();renderGoalSummary();renderCalendar();}
     function nutritionBadge(p) { if(!hasSomeNutrition(p)) return '<span class="chip chip-warn">Sin tabla nutricional</span>'; if(p.quality==='declarado') return '<span class="chip">Origen declarado por la fuente</span>'; if(p.quality==='estimado') return '<span class="chip chip-warn">Dato estimado</span>'; return '<span class="chip chip-warn">Verificar con la etiqueta</span>'; }
     function searchLocal(q){const norm=normalise(q);if(!norm)return[];const terms=norm.split(/\s+/).filter(Boolean);const all=[...customProducts,...catalog];const seen=new Set();return all.filter(p=>p.name&&p.isFood!==false&&terms.every(t=>normalise(`${p.name} ${p.brand} ${p.category}`).includes(t))).filter(p=>{const id=String(p.id);if(seen.has(id))return false;seen.add(id);return true;}).sort((a,b)=>{const aa=normalise(a.name),bb=normalise(b.name);const score=x=>x===norm?0:x.startsWith(norm)?1:x.includes(norm)?2:3;return score(aa)-score(bb)||aa.localeCompare(bb,'es');}).slice(0,16);}
     function renderSearchResults(items,message='') {
       shownResults=items;const host=$('searchResults');host.textContent='';if(message)$('searchStatus').textContent=message;
       if(!items.length){if($('searchInput').value.trim()){const no=document.createElement('div');no.className='no-results';no.textContent='No encontramos coincidencias en el catálogo disponible. Prueba con menos palabras o crea el alimento manualmente con los valores de su etiqueta.';host.append(no);}return;}
       for(let i=0;i<items.length;i++){const p=items[i];const card=document.createElement('div');card.className='product-result';const info=document.createElement('div');const name=document.createElement('div');name.className='product-name';name.textContent=p.name;const metaEl=document.createElement('div');metaEl.className='product-meta';metaEl.textContent=[p.brand,p.category].filter(Boolean).join(' · ')||'Producto Mercadona';const chips=document.createElement('div');chips.className='product-chips';chips.innerHTML=nutritionBadge(p);if(p.n?.kcal===null||p.n?.protein===null||p.n?.carbs===null||p.n?.fat===null){const chip=document.createElement('span');chip.className='chip chip-warn';chip.textContent='Ficha incompleta';chips.append(chip);}info.append(name,metaEl,chips);
-        const right=document.createElement('div');right.className='result-right';const kcal=document.createElement('div');kcal.className='result-kcal';kcal.textContent=p.n?.kcal===null?'—':fmt(p.n.kcal,0);const unit=document.createElement('div');unit.className='result-unit';unit.textContent='kcal / 100 g';const controls=document.createElement('div');controls.className='add-controls';const grams=document.createElement('input');grams.className='grams-input';grams.type='number';grams.min='0.1';grams.step='any';grams.value='100';grams.setAttribute('aria-label',`Cantidad para ${p.name}`);const add=document.createElement('button');add.className='btn btn-primary btn-small';add.type='button';add.textContent='Añadir';add.addEventListener('click',()=>{const amount=cleanNumber(grams.value);if(amount===null||amount<=0){toast('Introduce una cantidad mayor que cero.');return;}addProduct(p,amount,$('mealChoice').value);});controls.append(grams,add);right.append(kcal,unit,controls);card.append(info,right);host.append(card);
+        const right=document.createElement('div');right.className='result-right';const kcal=document.createElement('div');kcal.className='result-kcal';kcal.textContent=p.n?.kcal===null?'—':fmt(p.n.kcal,0);const unit=document.createElement('div');unit.className='result-unit';unit.textContent='kcal / 100 g';const controls=document.createElement('div');controls.className='add-controls';const qc=amountControl(p);const add=document.createElement('button');add.className='btn btn-primary btn-small';add.type='button';add.textContent='Añadir';add.addEventListener('click',()=>{const r=qc.read();if(!r)return;addProduct(p,r.grams,$('mealChoice').value,r.label);});controls.append(qc.el,add,starButton(p));right.append(kcal,unit,controls);card.append(info,right);host.append(card);
       }
     }
-    function addProduct(p,amount,meal){const n={};for(const k of ['kcal','protein','carbs','fat','fiber','sugars','saturatedFat','salt'])n[k]=p.n?.[k]??null;currentEntries().push({uid:`e-${Date.now()}-${Math.random().toString(16).slice(2,7)}`,productId:String(p.id),name:p.name,brand:p.brand||'',category:p.category||'',amount,unit:'g',meal:meal||'Sin asignar',n,quality:p.quality||'api_sin_verificar',source:p.source||'API independiente'});persistDiary();renderAll();toast(`${p.name}: añadido (${fmt(amount,1)} g).`);}
+    function addProduct(p,amount,meal,portionLabel){const n={};for(const k of ['kcal','protein','carbs','fat','fiber','sugars','saturatedFat','salt'])n[k]=p.n?.[k]??null;currentEntries().push({uid:`e-${Date.now()}-${Math.random().toString(16).slice(2,7)}`,productId:String(p.id),name:p.name,brand:p.brand||'',category:p.category||'',amount,unit:'g',meal:meal||'Sin asignar',n,quality:p.quality||'api_sin_verificar',source:p.source||'API independiente',portionLabel:portionLabel||'',servingG:p.servingG??null,servingLabel:p.servingLabel||'',recipe:p.recipe||null});persistDiary();renderAll();toast(`${p.name}: añadido (${portionLabel?portionLabel+' · ':''}${fmt(amount,1)} g).`);}
     async function fetchJson(url, timeout=25000){const ctrl=new AbortController();const timer=setTimeout(()=>ctrl.abort(),timeout);try{const res=await fetch(url,{signal:ctrl.signal,headers:{'Accept':'application/json'}});if(!res.ok)throw new Error(`HTTP ${res.status}`);return await res.json();}finally{clearTimeout(timer);}}
     async function searchRemote(query){
       const jobs=await Promise.allSettled([
@@ -413,7 +475,7 @@
     function exportCSV(){const rows=currentEntries();if(!rows.length){toast('No hay alimentos que exportar para este día.');return;}const columns=['fecha','comida','producto','marca','cantidad_g','kcal','proteinas_g','hidratos_g','grasas_g','fibra_g','azucares_g','grasas_saturadas_g','sal_g','origen_dato'];const csvVal=v=>`"${String(v??'').replace(/"/g,'""')}"`;const lines=[columns.join(';'),...rows.map(x=>[currentDay,x.meal,x.name,x.brand,x.amount,productTotal(x,'kcal',x.amount),productTotal(x,'protein',x.amount),productTotal(x,'carbs',x.amount),productTotal(x,'fat',x.amount),productTotal(x,'fiber',x.amount),productTotal(x,'sugars',x.amount),productTotal(x,'saturatedFat',x.amount),productTotal(x,'salt',x.amount),x.quality].map(csvVal).join(';'))];downloadFile(`leto_${currentDay}.csv`,'\ufeff'+lines.join('\r\n'),'text/csv;charset=utf-8');toast('CSV del día exportado.');}
     function exportBackup(){
       // Una copia completa debe incluir también perfil, cierres de días y tema.
-      const backup={format:'nutridia-local-backup-v2',createdAt:new Date().toISOString(),currentDay,goals,diary,customProducts,catalog,meta,personProfile,closedDays,appTheme};
+      const backup={format:'nutridia-local-backup-v2',createdAt:new Date().toISOString(),currentDay,goals,diary,customProducts,catalog,meta,personProfile,closedDays,appTheme,favorites,weights,water,settings};
       downloadFile(`NutriDia_copia_${todayLocal()}.json`,JSON.stringify(backup,null,2),'application/json');
       if($('localSaveStatus'))$('localSaveStatus').textContent=`Copia preparada el ${new Date().toLocaleString('es-ES')}. Guarda el archivo en Archivos o iCloud Drive.`;
       toast('Copia completa preparada. Guarda el archivo descargado en Archivos o iCloud Drive.',5000);
@@ -424,7 +486,7 @@
       return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result||''));reader.onerror=()=>reject(new Error('iOS no ha podido leer el archivo. Guarda la copia en Archivos e inténtalo de nuevo.'));reader.readAsText(file);});
     }
     function persistRestoredData(){
-      const writes=[[DIARY_KEY,diary],[GOALS_KEY,goals],[CUSTOM_KEY,customProducts],[META_KEY,meta],[PROFILE_KEY,personProfile],[CLOSED_KEY,closedDays],[THEME_KEY,appTheme]];
+      const writes=[[DIARY_KEY,diary],[GOALS_KEY,goals],[CUSTOM_KEY,customProducts],[META_KEY,meta],[PROFILE_KEY,personProfile],[CLOSED_KEY,closedDays],[THEME_KEY,appTheme],[FAV_KEY,favorites],[WEIGHT_KEY,weights],[WATER_KEY,water],[SETTINGS_KEY,settings]];
       if(Array.isArray(catalog)&&catalog.length) writes.push([CATALOG_KEY,catalog]);
       const failed=[];
       for(const [key,value] of writes){if(!save(key,value))failed.push(key);}
@@ -448,7 +510,7 @@
           if(data.meta)meta=data.meta;
           if(data.personProfile && typeof data.personProfile==='object')personProfile=data.personProfile;
           if(data.closedDays && typeof data.closedDays==='object')closedDays=data.closedDays;
-          if(data.appTheme)appTheme=data.appTheme;
+          if(data.appTheme)appTheme=data.appTheme;if(Array.isArray(data.favorites))favorites=data.favorites;if(data.weights&&typeof data.weights==='object')weights=data.weights;if(data.water&&typeof data.water==='object')water=data.water;if(data.settings&&typeof data.settings==='object')settings={...settings,...data.settings};applySettingsForm();
           if(data.currentDay && /^\d{4}-\d{2}-\d{2}$/.test(data.currentDay))currentDay=data.currentDay;
           const failed=persistRestoredData();
           $('dayPicker').value=currentDay;applyProfileForm();setTheme(appTheme,false);renderAll();updateCatalogBrowserCount();
@@ -510,10 +572,10 @@
       const pick=(...keys)=>{for(const k of keys){const v=n[k];if(v!==undefined&&v!==null&&v!==''){const x=Number(v);if(Number.isFinite(x))return x;}}return null;};
       const name=String(raw?.product_name_es||raw?.product_name||raw?.product_name_en||'').trim();
       if(!name)return null;
-      return {id:`off-${raw.code||normalise(name)}`,ean:raw.code||null,name,brand:String(raw.brands||''),category:String(raw.categories||'Producto alimentario'),n:{kcal:pick('energy-kcal_100g','energy-kcal_value','energy-kcal'),protein:pick('proteins_100g'),carbs:pick('carbohydrates_100g'),fat:pick('fat_100g'),fiber:pick('fiber_100g'),sugars:pick('sugars_100g'),saturatedFat:pick('saturated-fat_100g'),salt:pick('salt_100g')},quality:'api_sin_verificar',source:'Open Food Facts; comprobar etiqueta',isFood:true,custom:false};
+      return {id:`off-${raw.code||normalise(name)}`,ean:raw.code||null,name,brand:String(raw.brands||''),category:String(raw.categories||'Producto alimentario'),n:{kcal:pick('energy-kcal_100g','energy-kcal_value','energy-kcal'),protein:pick('proteins_100g'),carbs:pick('carbohydrates_100g'),fat:pick('fat_100g'),fiber:pick('fiber_100g'),sugars:pick('sugars_100g'),saturatedFat:pick('saturated-fat_100g'),salt:pick('salt_100g')},servingG:cleanNumber(raw.serving_quantity),servingLabel:raw.serving_size?String(raw.serving_size):'',quality:'api_sin_verificar',source:'Open Food Facts; comprobar etiqueta',isFood:true,custom:false};
     }
     async function searchOpenFoodFacts(query) {
-      const url=`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=24&fields=code,product_name,product_name_es,product_name_en,brands,categories,nutriments`;
+      const url=`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=24&fields=code,serving_quantity,serving_size,product_name,product_name_es,product_name_en,brands,categories,nutriments`;
       const data=await fetchJson(url,12000);
       return (Array.isArray(data?.products)?data.products:[]).map(mapOpenFoodFacts).filter(p=>p&&p.isFood&&(p.n.kcal!==null||p.n.protein!==null||p.n.carbs!==null||p.n.fat!==null));
     }
@@ -528,7 +590,7 @@
     function estimateProfile(saveIt=true){const d=getProfileForm();if(!d.age||!d.height||!d.weight||d.age<18||d.age>100||d.height<120||d.height>230||d.weight<35||d.weight>300){toast('Completa edad (18–100), altura y peso con valores válidos.');return;}personProfile=d;if(saveIt)save(PROFILE_KEY,personProfile);const base=10*d.weight+6.25*d.height-5*d.age+(d.sex==='male'?5:d.sex==='female'?-161:-78);const workFactor={sedentary:1.2,light:1.35,active:1.5,veryactive:1.65}[d.work]||1.2;const sportBonus=Math.min(0.18,(d.sportDays*(d.sportMinutes||0)*0.00055));const tdee=Math.round(base*(workFactor+sportBonus));let delta=0;if(d.goal==='lose')delta=-400;else if(d.goal==='gain')delta=250;let target=Math.round(tdee+delta);let pace='';if(d.goal==='lose'&&d.targetWeight&&d.targetWeight<d.weight){const kg=d.weight-d.targetWeight;const months=d.deadline||5;const weekly=kg/(months*4.345);const daily=kg*7700/(months*30.44);if(weekly>0.75){pace=`El plazo implica aproximadamente ${fmt(weekly,2)} kg/semana: es agresivo y conviene ampliarlo.`;}else{target=Math.round(tdee-daily);pace=`Para alcanzar ${fmt(d.targetWeight,1)} kg en ${fmt(months,0)} meses, el déficit teórico sería de ${fmt(daily,0)} kcal/día (${fmt(weekly,2)} kg/semana). Es una aproximación, no una predicción exacta.`;}}else if(d.goal==='gain'&&d.targetWeight&&d.targetWeight>d.weight){const months=d.deadline||5;const weekly=(d.targetWeight-d.weight)/(months*4.345);pace=`El objetivo equivale a ganar aproximadamente ${fmt(weekly,2)} kg/semana. Ajusta el ritmo según evolución real.`;}const safeTarget=Math.max(1200,target);const note=`Metabolismo basal estimado: ${fmt(base,0)} kcal/día.
 Mantenimiento estimado: ${fmt(tdee,0)} kcal/día.
 Meta energética estimada: ${fmt(safeTarget,0)} kcal/día. ${pace}
-La fórmula y los multiplicadores son aproximaciones; contrasta con la evolución del peso durante 2–4 semanas. No es consejo médico.`;$('profileEstimate').textContent=note;personProfile={...personProfile,...d,estimateText:note};goals={...goals,kcal:safeTarget,protein:null,carbs:null,fat:null};save(PROFILE_KEY,personProfile);save(GOALS_KEY,goals);syncProfileGoals();renderSummary();renderGoalSummary();renderHistory();toast('Perfil guardado y meta energética calculada.');}
+La fórmula y los multiplicadores son aproximaciones; contrasta con la evolución del peso durante 2–4 semanas. No es consejo médico.`;$('profileEstimate').textContent=note;personProfile={...personProfile,...d,estimateText:note,formulaTdee:tdee,goalOffset:safeTarget-tdee};goals={...goals,kcal:safeTarget,protein:null,carbs:null,fat:null};save(PROFILE_KEY,personProfile);save(GOALS_KEY,goals);syncProfileGoals();renderSummary();renderGoalSummary();renderHistory();toast('Perfil guardado y meta energética calculada.');}
     function setTheme(theme,saveIt=true){
       const themes={
         orange:['#FCE7DA','#A87355','#FFF1E8','#FFFAF7','#FFFFFF'],
@@ -561,7 +623,7 @@ La fórmula y los multiplicadores son aproximaciones; contrasta con la evolució
     function closeCurrentDay(){const state=dayStatus(currentDay);if(!state.items.length){toast('Añade al menos un alimento antes de cerrar el día.');return;}closedDays[currentDay]={closedAt:new Date().toISOString(),items:JSON.parse(JSON.stringify(diary[currentDay]||[])),totals:state.t};save(CLOSED_KEY,closedDays);renderHistory();renderBalanceMeals();toast('Día registrado y cerrado. Puedes reabrirlo si necesitas corregirlo.');}
     function renderBalanceMeals(){const host=$('balanceMealsSummary');if(!host)return;const entries=diary[currentDay]||[];host.textContent='';const groups=['Desayuno','Comida','Merienda','Cena','Picar entre horas','Sin asignar'];for(const group of groups){const rows=entries.filter(x=>(x.meal||'Sin asignar')===group);if(!rows.length)continue;const row=document.createElement('div');row.className='history-item';row.style.cursor='pointer';const left=document.createElement('span');const strong=document.createElement('strong');strong.textContent=group;const small=document.createElement('small');small.textContent=rows.map(x=>`${x.name} (${fmt(x.amount,0)} g)`).join(' · ');left.append(strong,small);const right=document.createElement('span');right.className='history-kcal';right.textContent=`${fmt(rows.reduce((a,x)=>a+(productTotal(x,'kcal',x.amount)||0),0),0)} kcal`;row.append(left,right);row.addEventListener('click',()=>setActiveTab('comidas'));host.append(row);}if(!entries.length)host.innerHTML='<div class="empty"><strong>Aún no has registrado alimentos</strong><p>Ve a Comidas para añadir lo que has comido.</p></div>';const status=$('dayCloseStatus');const st=dayStatus(currentDay);if(st.closed){status.textContent=`Día cerrado el ${new Date(st.closedAt||closedDays[currentDay].closedAt).toLocaleString('es-ES')}. ${st.met?'✓ Meta energética cumplida.':'✕ '+goalReasons(currentDay).join('; ')}`;$('closeDayBtn').textContent='Reabrir día';}else{status.textContent='Día pendiente de cerrar. Al terminar, pulsa «Cerrar día» para registrarlo en el historial.';$('closeDayBtn').textContent='Cerrar día';}}
     function toggleCloseDay(){if(closedDays[currentDay]){if(!confirm('¿Reabrir este día para modificar el registro?'))return;delete closedDays[currentDay];save(CLOSED_KEY,closedDays);renderAll();toast('Día reabierto.');}else closeCurrentDay();}
-    function loadInitial(){catalog=readStored(CATALOG_KEY,[]);customProducts=readStored(CUSTOM_KEY,[]);diary=readStored(DIARY_KEY,{});goals={...goals,...readStored(GOALS_KEY,{}),protein:null,carbs:null,fat:null};meta=readStored(META_KEY,{});personProfile=readStored(PROFILE_KEY,{});closedDays=readStored(CLOSED_KEY,{});appTheme=readStored(THEME_KEY,'orange');if(!personProfile?.estimateText){goals.kcal=null;save(GOALS_KEY,goals);}if(!Array.isArray(catalog))catalog=[];if(!Array.isArray(customProducts))customProducts=[];if(catalog.length===0){catalog=SEED_PRODUCTS;save(CATALOG_KEY,catalog);meta={...meta,source:'Catálogo inicial orientativo',foodCount:catalog.length};save(META_KEY,meta);}if(!diary||typeof diary!=='object')diary={};if(meta.lastSync)$('catalogDate').textContent=`Última actualización: ${new Date(meta.lastSync).toLocaleString('es-ES')}`;applyProfileForm();setTheme(appTheme,false);$('dayPicker').value=currentDay;renderAll();updateCatalogBrowserCount();if($('localSaveStatus'))$('localSaveStatus').textContent='Guardado automático local activado. Al volver a abrir esta misma web en Safari, se cargará el perfil guardado.';
+    function loadInitial(){catalog=readStored(CATALOG_KEY,[]);customProducts=readStored(CUSTOM_KEY,[]);diary=readStored(DIARY_KEY,{});goals={...goals,...readStored(GOALS_KEY,{}),protein:null,carbs:null,fat:null};meta=readStored(META_KEY,{});personProfile=readStored(PROFILE_KEY,{});closedDays=readStored(CLOSED_KEY,{});appTheme=readStored(THEME_KEY,'orange');loadV13();if(!personProfile?.estimateText){goals.kcal=null;save(GOALS_KEY,goals);}if(!Array.isArray(catalog))catalog=[];if(!Array.isArray(customProducts))customProducts=[];if(catalog.length===0){catalog=SEED_PRODUCTS;save(CATALOG_KEY,catalog);meta={...meta,source:'Catálogo inicial orientativo',foodCount:catalog.length};save(META_KEY,meta);}if(!diary||typeof diary!=='object')diary={};if(meta.lastSync)$('catalogDate').textContent=`Última actualización: ${new Date(meta.lastSync).toLocaleString('es-ES')}`;applyProfileForm();setTheme(appTheme,false);$('dayPicker').value=currentDay;renderAll();updateCatalogBrowserCount();if($('localSaveStatus'))$('localSaveStatus').textContent='Guardado automático local activado. Al volver a abrir esta misma web en Safari, se cargará el perfil guardado.';
       if(catalog.length){setStatus(`${catalog.length.toLocaleString('es-ES')} productos guardados localmente.`,'ok');const age=meta.lastSync?Date.now()-Date.parse(meta.lastSync):Infinity;if(age>24*60*60*1000)syncCatalog(true);}else{setStatus('Cargando catálogo disponible…','neutral');syncCatalog(true);}}
     $('calendarPrev')?.addEventListener('click',()=>{calendarMonth=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth()-1,1);renderCalendar();});$('calendarNext')?.addEventListener('click',()=>{calendarMonth=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth()+1,1);renderCalendar();});$('dayPicker').addEventListener('change',()=>{if(!$('dayPicker').value)return;currentDay=$('dayPicker').value;renderAll();});
     $('catalogFilter').addEventListener('input',()=>{catalogBrowserPage=0;renderCatalogBrowser();});$('catalogCategory').addEventListener('change',()=>{catalogBrowserPage=0;renderCatalogBrowser();});$('catalogPrev').addEventListener('click',()=>{catalogBrowserPage=Math.max(0,catalogBrowserPage-1);renderCatalogBrowser();});$('catalogNext').addEventListener('click',()=>{catalogBrowserPage++;renderCatalogBrowser();});$('catalogBrowser').addEventListener('toggle',()=>{if($('catalogBrowser').open)updateCatalogBrowserCount();});$('searchBtn').addEventListener('click',runSearch);$('searchInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();runSearch();}});$('searchInput').addEventListener('input',()=>{clearTimeout(searchTimer);const q=$('searchInput').value.trim();if(!q){renderSearchResults([],'Busca en el catálogo disponible o introduce un alimento manualmente.');return;}searchTimer=setTimeout(runSearch,380);});
@@ -570,10 +632,156 @@ La fórmula y los multiplicadores son aproximaciones; contrasta con la evolució
     const profileFieldIds=['personAge','personSex','personHeight','personWeight','personTargetWeight','personGoal','personWork','personSportDays','personSportMinutes','personDeadline'];
     function persistProfileDraft(){const d=getProfileForm();personProfile={...personProfile,...d};const ok=save(PROFILE_KEY,personProfile);if($('localSaveStatus'))$('localSaveStatus').textContent=ok?'Perfil guardado automáticamente en este navegador.':'No se pudo guardar. Descarga una copia de seguridad y comprueba el espacio disponible.';}
     profileFieldIds.forEach(id=>{const el=$(id);if(el){el.addEventListener('change',persistProfileDraft);el.addEventListener('input',()=>{clearTimeout(window.__nutriProfileSaveTimer);window.__nutriProfileSaveTimer=setTimeout(persistProfileDraft,350);});}});
-    window.addEventListener('pagehide',()=>{personProfile={...personProfile,...getProfileForm()};save(PROFILE_KEY,personProfile);save(DIARY_KEY,diary);save(GOALS_KEY,goals);save(CUSTOM_KEY,customProducts);save(CLOSED_KEY,closedDays);save(THEME_KEY,appTheme);save(META_KEY,meta);});
+    window.addEventListener('pagehide',()=>{saveV13();personProfile={...personProfile,...getProfileForm()};save(PROFILE_KEY,personProfile);save(DIARY_KEY,diary);save(GOALS_KEY,goals);save(CUSTOM_KEY,customProducts);save(CLOSED_KEY,closedDays);save(THEME_KEY,appTheme);save(META_KEY,meta);});
     document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'){personProfile={...personProfile,...getProfileForm()};save(PROFILE_KEY,personProfile);save(DIARY_KEY,diary);save(GOALS_KEY,goals);save(CLOSED_KEY,closedDays);save(THEME_KEY,appTheme);save(META_KEY,meta);}});
     $('calculateProfileBtn').addEventListener('click',()=>estimateProfile(true));$('closeDayBtn').addEventListener('click',toggleCloseDay);document.querySelectorAll('[data-theme]').forEach(b=>b.addEventListener('click',()=>setTheme(b.dataset.theme,true)));document.querySelectorAll('[data-tab]').forEach(btn=>btn.addEventListener('click',()=>setActiveTab(btn.dataset.tab)));  $('clearDayBtn').addEventListener('click',clearDay);$('csvBtn').addEventListener('click',exportCSV);$('backupBtn').addEventListener('click',exportBackup);$('syncBtn').addEventListener('click',()=>syncCatalog(false));$('importCatalogInput').addEventListener('change',e=>processJSONFile(e.target.files?.[0],'catalog'));$('importBackupInput').addEventListener('change',e=>processJSONFile(e.target.files?.[0],'backup'));
     if('serviceWorker' in navigator && location.protocol.startsWith('http')) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+    // ===================== v13 =====================
+    const FAV_KEY='nutridia_favorites_v1', WEIGHT_KEY='nutridia_weights_v1', WATER_KEY='nutridia_water_v1', SETTINGS_KEY='nutridia_settings_v1';
+    let favorites=[], weights={}, water={}, settings={proteinPerKg:null,waterGoal:null,portions:{}}, quickMode='recent', statPeriod=7, scanReader=null, scanStream=null, scanLoop=null, scanBusy=false;
+    const dayShift=(day,delta)=>{const d=new Date(day+'T12:00:00');d.setDate(d.getDate()+delta);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
+    const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e;};
+    function loadV13(){favorites=readStored(FAV_KEY,[]);if(!Array.isArray(favorites))favorites=[];weights=readStored(WEIGHT_KEY,{})||{};water=readStored(WATER_KEY,{})||{};settings={proteinPerKg:null,waterGoal:null,portions:{},...(readStored(SETTINGS_KEY,{})||{})};if(!settings.portions||typeof settings.portions!=='object')settings.portions={};applySettingsForm();}
+    function saveV13(){save(FAV_KEY,favorites);save(WEIGHT_KEY,weights);save(WATER_KEY,water);save(SETTINGS_KEY,settings);}
+    function applySettingsForm(){if($('proteinPerKg'))$('proteinPerKg').value=settings.proteinPerKg??'';if($('waterGoalInput'))$('waterGoalInput').value=settings.waterGoal??'';}
+    function latestWeight(){const keys=Object.keys(weights).filter(k=>cleanNumber(weights[k])).sort();if(keys.length)return Number(weights[keys[keys.length-1]]);return cleanNumber(personProfile?.weight);}
+    function proteinGoalValue(){const k=cleanNumber(settings.proteinPerKg),w=latestWeight();const v=k&&w?Math.round(k*w):null;if($('proteinGoalHint'))$('proteinGoalHint').textContent=v?`Meta: ${fmt(v,0)} g/día con ${fmt(w,1)} kg`:k?'Introduce tu peso para calcularla':'Desactivada';return v;}
+
+    // ---------- Raciones ----------
+    function portionsFor(p){const list=[];const id=String(p.id);
+      if(p.recipe&&p.recipe.servings>0&&p.recipe.totalWeight>0)list.push({label:'ración',g:p.recipe.totalWeight/p.recipe.servings,src:'receta'});
+      if(cleanNumber(p.servingG)>0)list.push({label:p.servingLabel?`porción etiqueta (${p.servingLabel})`:'porción de etiqueta',g:Number(p.servingG),src:'etiqueta'});
+      for(const x of (settings.portions[id]||[]))list.push({label:x.label,g:x.g,src:'propia'});
+      return list;}
+    function amountControl(p,defaultGrams=100){
+      const wrap=el('div','qty-wrap');const qty=el('input','grams-input');qty.type='number';qty.min='0.1';qty.step='any';qty.setAttribute('aria-label',`Cantidad de ${p.name}`);
+      const sel=el('select','portion-select');sel.setAttribute('aria-label','Unidad');
+      const build=(keep)=>{const ports=portionsFor(p);sel.textContent='';const g=el('option','', 'g');g.value='g';sel.append(g);ports.forEach((x,i)=>{const o=el('option','',`${x.label} · ${fmt(x.g,0)} g`);o.value=String(i);sel.append(o);});const nw=el('option','','＋ Nueva ración…');nw.value='new';sel.append(nw);sel.value=keep??'g';return ports;};
+      let ports=build();
+      if(p.recipe&&ports.length){sel.value='0';qty.value='1';}else qty.value=String(Math.round(defaultGrams*10)/10);
+      let last=sel.value;
+      sel.addEventListener('change',()=>{if(sel.value==='new'){const label=(prompt('Nombre de la ración (ej. «1 rebanada», «1 cucharada», «1 unidad»):')||'').trim();if(!label){sel.value=last;return;}const g=cleanNumber(String(prompt(`¿Cuántos gramos pesa «${label}»? Mejor si lo has pesado tú.`)||'').replace(',','.'));if(!g||g<=0){toast('Introduce un peso válido en gramos.');sel.value=last;return;}const id=String(p.id);settings.portions[id]=[...(settings.portions[id]||[]),{label,g}];save(SETTINGS_KEY,settings);ports=build();sel.value=String(ports.length-1);qty.value='1';toast(`Ración «${label}» guardada para este alimento.`);}
+        else if(sel.value==='g'&&last!=='g'){const pr=ports[Number(last)];if(pr)qty.value=String(Math.round((cleanNumber(qty.value)||1)*pr.g));}
+        else if(sel.value!=='g'&&last==='g'){qty.value='1';}
+        last=sel.value;});
+      wrap.append(qty,sel);
+      return {el:wrap,read(){const q=cleanNumber(String(qty.value).replace(',','.'));if(q===null||q<=0){toast('Introduce una cantidad mayor que cero.');return null;}if(sel.value==='g')return {grams:q,label:''};const pr=ports[Number(sel.value)];return {grams:q*pr.g,label:`${fmt(q,2)} × ${pr.label}`};}};
+    }
+
+    // ---------- Favoritos y recientes ----------
+    const isFav=p=>favorites.some(f=>String(f.id)===String(p.id));
+    function snapshot(p){return {id:String(p.id),name:p.name,brand:p.brand||'',category:p.category||'',n:{...(p.n||{})},quality:p.quality||'api_sin_verificar',source:p.source||'',servingG:p.servingG??null,servingLabel:p.servingLabel||'',recipe:p.recipe||null,isFood:true};}
+    function entryToProduct(item){const own=customProducts.find(c=>String(c.id)===String(item.productId));if(own)return own;return snapshot({...item,id:item.productId});}
+    function starButton(p){const b=el('button','star-btn'+(isFav(p)?' on':''),isFav(p)?'★':'☆');b.type='button';b.title=isFav(p)?'Quitar de favoritos':'Añadir a favoritos';b.setAttribute('aria-label',b.title);b.setAttribute('aria-pressed',String(isFav(p)));b.addEventListener('click',()=>{if(isFav(p)){favorites=favorites.filter(f=>String(f.id)!==String(p.id));toast('Quitado de favoritos.');}else{favorites.unshift(snapshot(p));toast('Añadido a favoritos.');}save(FAV_KEY,favorites);renderAll();if(shownResults.length)renderSearchResults(shownResults);});return b;}
+    function recentProducts(limit=15){const out=new Map();const days=Object.keys(diary).filter(d=>Array.isArray(diary[d])&&diary[d].length).sort().reverse();for(const d of days){for(const it of [...diary[d]].reverse()){const id=String(it.productId);if(!out.has(id))out.set(id,{p:entryToProduct(it),amount:it.amount,day:d});if(out.size>=limit)return [...out.values()];}}return [...out.values()];}
+    function quickCard(p,defaultGrams,metaText,extra){const card=el('div','product-result');const info=el('div');info.append(el('div','product-name',p.name),el('div','product-meta',metaText||[p.brand,p.category].filter(Boolean).join(' · ')));const right=el('div','result-right');const kc=el('div','result-kcal',p.n?.kcal==null?'—':fmt(p.n.kcal,0));const un=el('div','result-unit','kcal / 100 g');const controls=el('div','add-controls');const qc=amountControl(p,defaultGrams);const add=el('button','btn btn-primary btn-small','Añadir');add.type='button';add.addEventListener('click',()=>{const r=qc.read();if(r)addProduct(p,r.grams,$('mealChoice').value,r.label);});controls.append(qc.el,add,starButton(p));if(extra)controls.append(extra);right.append(kc,un,controls);card.append(info,right);return card;}
+    function renderQuick(){const host=$('quickList');if(!host)return;host.textContent='';document.querySelectorAll('[data-quick]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.quick===quickMode)));
+      let rows=[];
+      if(quickMode==='recent'){rows=recentProducts().map(r=>quickCard(r.p,r.amount,`Última vez: ${fmt(r.amount,0)} g · ${new Date(r.day+'T12:00:00').toLocaleDateString('es-ES',{day:'numeric',month:'short'})}`));if(!rows.length)host.append(el('div','no-results','Aún no hay alimentos recientes. Aparecerán aquí al registrar comidas.'));}
+      else if(quickMode==='fav'){rows=favorites.map(f=>quickCard(f,100));if(!rows.length)host.append(el('div','no-results','Marca con ☆ cualquier alimento para tenerlo siempre a mano.'));}
+      else{const recs=customProducts.filter(c=>c.recipe);rows=recs.map(r=>{const del=el('button','icon-btn','×');del.type='button';del.title='Eliminar receta';del.setAttribute('aria-label',`Eliminar receta ${r.name}`);del.addEventListener('click',()=>{if(!confirm(`¿Eliminar la receta «${r.name}»? Los días ya registrados no cambian.`))return;customProducts=customProducts.filter(c=>c.id!==r.id);favorites=favorites.filter(f=>f.id!==r.id);save(CUSTOM_KEY,customProducts);save(FAV_KEY,favorites);renderAll();toast('Receta eliminada.');});return quickCard(r,100,`${r.recipe.ingredients.length} ingredientes · ${fmt(r.recipe.totalWeight,0)} g en total · ${r.recipe.servings} ${r.recipe.servings===1?'ración':'raciones'}`,del);});if(!rows.length)host.append(el('div','no-results','Registra los ingredientes de un plato en una comida y pulsa «Guardar como receta» en su cabecera.'));}
+      rows.forEach(r=>host.append(r));}
+    function copyPreviousDay(){const prev=dayShift(currentDay,-1);const meal=$('copyMeal').value;const src=(diary[prev]||[]).filter(x=>!meal||(x.meal||'Sin asignar')===meal);if(!src.length){toast(`No hay ${meal?meal.toLowerCase():'alimentos'} registrados el día anterior.`);return;}const target=meal||'';const copies=src.map(x=>({...JSON.parse(JSON.stringify(x)),uid:`e-${Date.now()}-${Math.random().toString(16).slice(2,7)}`,meal:target||x.meal}));currentEntries().push(...copies);persistDiary();renderAll();toast(`${copies.length} ${copies.length===1?'alimento copiado':'alimentos copiados'} del día anterior.`);}
+
+    // ---------- Recetas ----------
+    function saveMealAsRecipe(group){const rows=currentEntries().filter(x=>(x.meal||'Sin asignar')===group);if(!rows.length)return;const name=(prompt(`Nombre de la receta (${rows.length} ingredientes de ${group.toLowerCase()}):`)||'').trim();if(!name)return;const servings=Math.max(1,Math.round(cleanNumber(prompt('¿Para cuántas raciones es esta cantidad?','1'))||1));
+      const total=rows.reduce((s,x)=>s+x.amount,0);const n={};let incomplete=false;for(const k of ['kcal','protein','carbs','fat','fiber','sugars','saturatedFat','salt']){let sum=0,known=0;for(const x of rows){const v=productTotal(x,k,x.amount);if(v===null){if(['kcal','protein','carbs','fat'].includes(k))incomplete=true;}else{sum+=v;known++;}}n[k]=known?sum/total*100:null;}
+      const p={id:`recipe-${Date.now()}`,name,brand:'',category:'Receta',n,quality:incomplete?'estimado':'manual_etiqueta',source:'Receta propia (suma de ingredientes)',isFood:true,custom:true,recipe:{servings,totalWeight:total,ingredients:rows.map(x=>({name:x.name,amount:x.amount,productId:x.productId}))}};
+      customProducts.unshift(p);save(CUSTOM_KEY,customProducts);quickMode='recipes';renderAll();toast(incomplete?`Receta «${name}» guardada. Algún ingrediente no tenía todos los nutrientes.`:`Receta «${name}» guardada.`,4500);}
+
+    // ---------- Agua y fibra ----------
+    function renderWaterFiber(){if(!$('waterValue'))return;const ml=water[currentDay]||0;const g=cleanNumber(settings.waterGoal);$('waterValue').textContent=`${fmt(ml,0)} ml`;$('waterGoalLabel').textContent=g?`Meta: ${fmt(g,0)} ml · ${fmt(Math.min(ml/g*100,999),0)}%`:'Sin meta definida (ajústala en Mi perfil).';$('waterProgress').style.width=g?`${Math.min(ml/g*100,100)}%`:'0%';
+      const {totals,missing,count}=currentTotals();const f=totals.fiber;$('fiberValue').textContent=`${fmt(f??0,1)} g`;$('fiberPct').textContent=f==null?'—':`${fmt(f/25*100,0)}%`;$('fiberProgress').style.width=`${Math.min((f||0)/25*100,100)}%`;$('fiberNote').textContent=count&&missing.fiber?`${missing.fiber} ${missing.fiber===1?'alimento no informa':'alimentos no informan'} la fibra; el total real puede ser mayor.`:'';}
+    function addWater(delta){water[currentDay]=Math.max(0,(water[currentDay]||0)+delta);save(WATER_KEY,water);renderWaterFiber();}
+
+    // ---------- Estadísticas ----------
+    function dayTotals(day){return (diary[day]||[]).reduce((a,x)=>{for(const k of ['kcal','protein','carbs','fat']){const v=productTotal(x,k,x.amount);if(v!==null)a[k]+=v;}return a;},{kcal:0,protein:0,carbs:0,fat:0});}
+    function renderStats(){const host=$('statGrid');if(!host)return;document.querySelectorAll('[data-period]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.period)===statPeriod)));
+      const end=todayLocal();const days=[];for(let i=statPeriod-1;i>=0;i--)days.push(dayShift(end,-i));
+      const logged=days.filter(d=>(diary[d]||[]).length);const t=logged.map(dayTotals);const avg=k=>t.length?t.reduce((s,x)=>s+x[k],0)/t.length:null;
+      const closed=days.filter(d=>closedDays[d]);const inRange=closed.filter(d=>dayStatus(d).met).length;
+      let streak=0,d=end;if(!closedDays[d])d=dayShift(d,-1);while(closedDays[d]){streak++;d=dayShift(d,-1);}
+      host.textContent='';const stat=(label,value,sub)=>{const s=el('div','stat');s.append(el('small','',label),el('strong','',value),el('span','',sub));host.append(s);};
+      stat('Media kcal',avg('kcal')==null?'—':fmt(avg('kcal'),0),`${logged.length} de ${statPeriod} días registrados`);
+      stat('Proteína media',avg('protein')==null?'—':`${fmt(avg('protein'),0)} g`,`HC ${avg('carbs')==null?'—':fmt(avg('carbs'),0)} g · G ${avg('fat')==null?'—':fmt(avg('fat'),0)} g`);
+      stat('Días en rango',closed.length?`${inRange}/${closed.length}`:'—',closed.length?`${fmt(inRange/closed.length*100,0)}% de los días cerrados`:'Sin días cerrados');
+      stat('Racha',`${streak} ${streak===1?'día':'días'}`,'Días cerrados seguidos');
+      // gráfico de barras
+      const W=600,H=170,pl=34,pb=22,pt=10,goal=goals.kcal||0;const vals=days.map(d=>dayTotals(d).kcal);const max=Math.max(goal*1.2,...vals,500);const bw=(W-pl-6)/days.length;
+      let svg=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Calorías diarias del periodo">`;
+      for(const f of [0,.5,1]){const y=pt+(H-pt-pb)*(1-f);svg+=`<line x1="${pl}" x2="${W}" y1="${y}" y2="${y}" stroke="rgba(0,0,0,.06)"/><text x="${pl-5}" y="${y+3}" text-anchor="end">${fmt(max*f,0)}</text>`;}
+      days.forEach((day,i)=>{const v=vals[i];const h=(H-pt-pb)*(v/max);const x=pl+i*bw+bw*.18;const st=dayStatus(day);const col=!v?'rgba(0,0,0,.06)':st.closed?(st.met?'#7DBE94':'#E39A95'):'var(--green2)';svg+=`<rect x="${x}" y="${H-pb-Math.max(h,2)}" width="${bw*.64}" height="${Math.max(h,2)}" rx="3" fill="${col}"><title>${day}: ${fmt(v,0)} kcal</title></rect>`;if(statPeriod<=7||i%5===0||i===days.length-1)svg+=`<text x="${x+bw*.32}" y="${H-6}" text-anchor="middle">${Number(day.slice(8))}</text>`;});
+      if(goal){const y=pt+(H-pt-pb)*(1-goal/max);svg+=`<line x1="${pl}" x2="${W}" y1="${y}" y2="${y}" stroke="var(--ink)" stroke-dasharray="5 4" stroke-width="1.2" opacity=".55"/><text x="${W-2}" y="${y-4}" text-anchor="end">Meta ${fmt(goal,0)}</text>`;}
+      svg+='</svg><p class="panel-kicker">Verde: día cerrado en rango · Rojo: fuera de rango · Color del tema: sin cerrar.</p>';$('kcalChart').innerHTML=svg;}
+
+    // ---------- Peso y gasto real ----------
+    function linReg(points){const n=points.length;const mx=points.reduce((s,p)=>s+p[0],0)/n,my=points.reduce((s,p)=>s+p[1],0)/n;let num=0,den=0;for(const [x,y] of points){num+=(x-mx)*(y-my);den+=(x-mx)**2;}return den?num/den:0;}
+    function estimateRealTdee(){const end=todayLocal(),start=dayShift(end,-27);const dayNum=d=>Math.round(Date.parse(d+'T12:00:00')/864e5);
+      const wp=Object.keys(weights).filter(d=>d>=start&&d<=end&&cleanNumber(weights[d])).sort().map(d=>[dayNum(d),Number(weights[d])]);
+      const intakeDays=[];for(let i=0;i<28;i++){const d=dayShift(end,-i);if((diary[d]||[]).length)intakeDays.push(d);}
+      const span=wp.length?wp[wp.length-1][0]-wp[0][0]:0;
+      if(wp.length<3||span<14||intakeDays.length<14)return {ok:false,wp:wp.length,span,intake:intakeDays.length};
+      const avgKcal=intakeDays.reduce((s,d)=>s+dayTotals(d).kcal,0)/intakeDays.length;const slope=linReg(wp);const tdee=avgKcal-slope*7700;
+      return {ok:true,avgKcal,slope,tdee,intake:intakeDays.length,wp:wp.length};}
+    function renderWeight(){if(!$('weightChart'))return;const cw=weights[currentDay];if(document.activeElement!==$('weightInput'))$('weightInput').value=cw??'';
+      const keys=Object.keys(weights).filter(k=>cleanNumber(weights[k])).sort().slice(-90);
+      if(keys.length<2){$('weightChart').innerHTML=`<p class="panel-kicker" style="margin-top:12px">${keys.length?'Registra al menos otro día para ver la evolución.':'Aún no hay pesos registrados.'}</p>`;}
+      else{const W=600,H=180,pl=36,pb=22,pt=12;const vals=keys.map(k=>Number(weights[k]));const mn=Math.min(...vals)-0.5,mx=Math.max(...vals)+0.5;const t0=Date.parse(keys[0]),t1=Date.parse(keys[keys.length-1]);const X=k=>pl+(W-pl-8)*((Date.parse(k)-t0)/Math.max(t1-t0,1));const Y=v=>pt+(H-pt-pb)*(1-(v-mn)/(mx-mn));
+        const ma=keys.map((k,i)=>{const w=vals.slice(Math.max(0,i-6),i+1);return w.reduce((a,b)=>a+b,0)/w.length;});
+        let svg=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Evolución del peso">`;
+        for(const f of [0,.5,1]){const v=mn+(mx-mn)*f;svg+=`<line x1="${pl}" x2="${W}" y1="${Y(v)}" y2="${Y(v)}" stroke="rgba(0,0,0,.06)"/><text x="${pl-5}" y="${Y(v)+3}" text-anchor="end">${fmt(v,1)}</text>`;}
+        if(personProfile?.targetWeight&&personProfile.targetWeight>=mn&&personProfile.targetWeight<=mx)svg+=`<line x1="${pl}" x2="${W}" y1="${Y(personProfile.targetWeight)}" y2="${Y(personProfile.targetWeight)}" stroke="#7DBE94" stroke-dasharray="5 4"/><text x="${W-2}" y="${Y(personProfile.targetWeight)-4}" text-anchor="end">Objetivo</text>`;
+        svg+=`<polyline fill="none" stroke="var(--green2)" stroke-width="2.5" stroke-linejoin="round" points="${keys.map((k,i)=>`${X(k)},${Y(ma[i])}`).join(' ')}"/>`;
+        keys.forEach((k,i)=>{svg+=`<circle cx="${X(k)}" cy="${Y(vals[i])}" r="3" fill="var(--paper)" stroke="var(--green2)" stroke-width="1.5"><title>${k}: ${fmt(vals[i],1)} kg</title></circle>`;});
+        svg+=`<text x="${pl}" y="${H-6}">${new Date(keys[0]+'T12:00:00').toLocaleDateString('es-ES',{day:'numeric',month:'short'})}</text><text x="${W-2}" y="${H-6}" text-anchor="end">${new Date(keys[keys.length-1]+'T12:00:00').toLocaleDateString('es-ES',{day:'numeric',month:'short'})}</text></svg><p class="panel-kicker">Puntos: pesajes · Línea: media móvil de 7 registros (suaviza la retención de líquidos).</p>`;
+        $('weightChart').innerHTML=svg;}
+      const r=estimateRealTdee();const box=$('tdeeBox');
+      if(!r.ok){box.textContent=`Gasto real: se necesitan al menos 14 días con comidas registradas y 3 pesajes que abarquen 14 días dentro de las últimas 4 semanas. Ahora: ${r.intake} días registrados, ${r.wp} pesajes (${r.span} días entre el primero y el último).`;$('applyTdeeBtn').classList.add('hidden');return;}
+      const weekly=r.slope*7;const formula=personProfile?.formulaTdee;
+      box.textContent=`Gasto real estimado: ${fmt(r.tdee,0)} kcal/día. Últimas 4 semanas: ingesta media ${fmt(r.avgKcal,0)} kcal en ${r.intake} días registrados, tendencia de peso ${weekly>=0?'+':''}${fmt(weekly,2)} kg/semana.${formula?` La fórmula teórica daba ${fmt(formula,0)} kcal/día.`:''} Supone que registras todo lo que comes y usa 7.700 kcal por kg; es una estimación.`;
+      $('applyTdeeBtn').classList.remove('hidden');$('applyTdeeBtn').onclick=()=>{const off=personProfile?.goalOffset??({lose:-400,maintain:0,gain:250}[personProfile?.goal]??0);const target=Math.max(1200,Math.round(r.tdee+off));if(!confirm(`Nueva meta energética: ${fmt(target,0)} kcal/día (gasto real ${fmt(r.tdee,0)} ${off>=0?'+':'−'} ${fmt(Math.abs(off),0)}). ¿Aplicar?`))return;goals={...goals,kcal:target};save(GOALS_KEY,goals);renderAll();toast('Meta energética actualizada con tu gasto real.');};}
+    function saveWeight(){const v=cleanNumber(String($('weightInput').value).replace(',','.'));if(!v||v<30||v>300){toast('Introduce un peso válido (30–300 kg).');return;}weights[currentDay]=Math.round(v*10)/10;save(WEIGHT_KEY,weights);if(currentDay>=Object.keys(weights).sort().slice(-1)[0]){personProfile={...personProfile,weight:weights[currentDay]};save(PROFILE_KEY,personProfile);if($('personWeight'))$('personWeight').value=String(weights[currentDay]);}renderAll();toast(`Peso guardado: ${fmt(weights[currentDay],1)} kg.`);}
+
+    // ---------- Escáner ----------
+    async function lookupBarcode(code){code=String(code||'').replace(/\D/g,'');if(code.length<8){toast('El código debe tener al menos 8 dígitos.');return;}
+      $('scanStatus').textContent=`Buscando ${code}…`;
+      let p=[...customProducts,...catalog].find(x=>String(x.ean||'')===code);
+      if(!p){try{const data=await fetchJson(`https://world.openfoodfacts.org/api/v2/product/${code}.json?fields=code,serving_quantity,serving_size,product_name,product_name_es,product_name_en,brands,categories,nutriments`,12000);if(data?.status===1&&data.product)p=mapOpenFoodFacts({...data.product,code});}catch(e){console.warn(e);}}
+      if(!p){$('scanStatus').textContent=`No se encontró ${code} en Open Food Facts.`;toast('Producto no encontrado. Puedes añadirlo con los datos de su etiqueta.',4500);closeScanner();$('manualPanel').classList.add('open');$('manualToggle').textContent='− Ocultar formulario';$('mName').focus();return;}
+      if(!catalog.some(x=>String(x.id)===String(p.id))){catalog=[...catalog,p].slice(-5000);save(CATALOG_KEY,catalog);updateCatalogBrowserCount();}
+      closeScanner();$('searchInput').value='';renderSearchResults([p],`Producto encontrado por código de barras (${code}). Comprueba la etiqueta.`);$('searchResults').scrollIntoView({behavior:'smooth',block:'center'});}
+    function onScanResult(code){if(scanBusy)return;scanBusy=true;if(navigator.vibrate)navigator.vibrate(60);lookupBarcode(code).finally(()=>{scanBusy=false;});}
+    function loadScript(src){return new Promise((res,rej)=>{if(window.ZXing)return res();const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>{s.remove();rej(new Error('No se pudo cargar el lector'));};document.head.append(s);});}
+    async function openScanner(){$('scanModal').classList.add('open');$('eanInput').value='';scanBusy=false;const video=$('scanVideo');
+      if(!navigator.mediaDevices?.getUserMedia||!window.isSecureContext){$('scanStatus').textContent='La cámara solo funciona en la web publicada (https). Escribe el código abajo.';return;}
+      $('scanStatus').textContent='Abriendo cámara…';
+      try{
+        if('BarcodeDetector' in window&&(await BarcodeDetector.getSupportedFormats()).includes('ean_13')){
+          scanStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'},audio:false});video.srcObject=scanStream;await video.play();const det=new BarcodeDetector({formats:['ean_13','ean_8','upc_a','upc_e']});$('scanStatus').textContent='Enfoca el código del envase dentro del recuadro.';
+          const tick=async()=>{if(!scanStream)return;try{const r=await det.detect(video);if(r[0]?.rawValue){onScanResult(r[0].rawValue);return;}}catch{}scanLoop=requestAnimationFrame(tick);};tick();
+        }else{
+          try{await loadScript('https://cdn.jsdelivr.net/npm/@zxing/library@0.20.0/umd/index.min.js');}catch{await loadScript('https://unpkg.com/@zxing/library@0.20.0/umd/index.min.js');}
+          const hints=new Map();hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS,[ZXing.BarcodeFormat.EAN_13,ZXing.BarcodeFormat.EAN_8,ZXing.BarcodeFormat.UPC_A,ZXing.BarcodeFormat.UPC_E]);
+          scanReader=new ZXing.BrowserMultiFormatReader(hints);$('scanStatus').textContent='Enfoca el código del envase dentro del recuadro.';
+          await scanReader.decodeFromConstraints({video:{facingMode:'environment'},audio:false},video,(result)=>{if(result)onScanResult(result.getText());});
+        }
+      }catch(e){console.warn(e);$('scanStatus').textContent='No se pudo usar la cámara (permiso denegado o no disponible). Escribe el código abajo.';}}
+    function closeScanner(){$('scanModal').classList.remove('open');if(scanLoop)cancelAnimationFrame(scanLoop);scanLoop=null;try{scanReader?.reset();}catch{}scanReader=null;if(scanStream){scanStream.getTracks().forEach(t=>t.stop());scanStream=null;}const v=$('scanVideo');if(v){try{v.pause();}catch{}v.srcObject=null;}}
+
+    // ---------- Eventos v13 ----------
+    document.querySelectorAll('[data-quick]').forEach(b=>b.addEventListener('click',()=>{quickMode=b.dataset.quick;renderQuick();}));
+    document.querySelectorAll('[data-period]').forEach(b=>b.addEventListener('click',()=>{statPeriod=Number(b.dataset.period);renderStats();}));
+    $('copyPrevBtn').addEventListener('click',copyPreviousDay);
+    $('waterPlus').addEventListener('click',()=>addWater(250));$('waterMinus').addEventListener('click',()=>addWater(-250));
+    $('weightSaveBtn').addEventListener('click',saveWeight);$('weightInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();saveWeight();}});
+    $('proteinPerKg').addEventListener('change',()=>{const v=cleanNumber(String($('proteinPerKg').value).replace(',','.'));settings.proteinPerKg=v&&v>0?v:null;save(SETTINGS_KEY,settings);renderAll();});
+    $('waterGoalInput').addEventListener('change',()=>{const v=cleanNumber($('waterGoalInput').value);settings.waterGoal=v&&v>0?v:null;save(SETTINGS_KEY,settings);renderWaterFiber();});
+    $('scanBtn').addEventListener('click',openScanner);$('scanClose').addEventListener('click',closeScanner);$('scanModal').addEventListener('click',e=>{if(e.target===$('scanModal'))closeScanner();});
+    $('eanBtn').addEventListener('click',()=>lookupBarcode($('eanInput').value));$('eanInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();lookupBarcode($('eanInput').value);}});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('scanModal').classList.contains('open'))closeScanner();});
+    let historyExpanded=false;const _renderHistoryBase=renderHistory;
+    renderHistory=function(){_renderHistoryBase();const host=$('historyList');if(!host)return;const items=[...host.querySelectorAll('.history-item')];if(items.length<=10)return;if(!historyExpanded)items.slice(10).forEach(i=>i.classList.add('hidden'));const more=el('button','btn btn-line btn-small',historyExpanded?'Mostrar menos':`Ver los ${items.length} días`);more.type='button';more.addEventListener('click',()=>{historyExpanded=!historyExpanded;renderHistory();});host.append(more);};
+
     loadInitial();
   })();
   </script>

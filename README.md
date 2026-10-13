@@ -31,3 +31,14 @@ La información personal se guarda en el almacenamiento del navegador para ese d
 - Se mantienen las mismas claves de almacenamiento: no se pierde ningún dato.
 
 Archivos a subir a la raíz: index.html, manifest.webmanifest, sw.js, icon.svg, icon-maskable.svg, apple-touch-icon.png, icon-192.png, icon-512.png.
+
+### v13
+- Escáner de código de barras (cámara del móvil) con búsqueda en Open Food Facts; también admite escribir el código a mano.
+- Accesos rápidos en Comidas: Recientes, Favoritos (☆) y Recetas; botón «Repetir día anterior» (todo o por comida).
+- Recetas: «Guardar como receta» en la cabecera de cada comida; se añaden por raciones.
+- Raciones: porción de la etiqueta (Open Food Facts), ración de receta y raciones propias («＋ Nueva ración…»).
+- Historial: estadísticas de 7/30 días (medias, días en rango, racha y gráfico) y registro de peso con gráfica.
+- Gasto real: con 14 días registrados y 3 pesajes en 14 días o más, estima tu mantenimiento real y permite aplicarlo a la meta.
+- Balance: agua (meta opcional) y fibra (referencia EFSA 25 g/día).
+- Mi perfil: meta de proteína opcional en g/kg.
+- La copia de seguridad incluye favoritos, pesos, agua y ajustes. Se conservan todos los datos anteriores.
