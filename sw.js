@@ -1,4 +1,4 @@
-const CACHE = 'nutridia-v11-calendar-pastel';
+const CACHE = 'nutridia-v12-portable-backup';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon.svg'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting()));

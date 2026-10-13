@@ -317,10 +317,24 @@
       toast('Copia completa preparada. Guarda el archivo descargado en Archivos o iCloud Drive.',5000);
     }
     function importProducts(data){const rawProducts=Array.isArray(data)?data:(Array.isArray(data?.products)?data.products:Array.isArray(data?.catalog)?data.catalog:null);if(!rawProducts)throw new Error('El archivo no contiene una lista de productos reconocible.');const mapped=rawProducts.map(raw=>{if(raw?.n && raw?.name){return {...raw,id:String(raw.id??`import-${normalise(raw.name)}`),n:{kcal:cleanNumber(raw.n.kcal),protein:cleanNumber(raw.n.protein),carbs:cleanNumber(raw.n.carbs),fat:cleanNumber(raw.n.fat),fiber:cleanNumber(raw.n.fiber),sugars:cleanNumber(raw.n.sugars),saturatedFat:cleanNumber(raw.n.saturatedFat),salt:cleanNumber(raw.n.salt)},source:raw.source||'Importado',quality:raw.quality||'api_sin_verificar',isFood:raw.isFood!==false};}return mapProduct(raw);}).filter(p=>p.name&&p.isFood!==false);if(!mapped.length)throw new Error('No se encontraron productos de alimentación válidos.');catalog=mapped;meta={...meta,lastSync:new Date().toISOString(),source:'Importación JSON',rawCount:mapped.length,foodCount:mapped.length};save(CATALOG_KEY,catalog);save(META_KEY,meta);setStatus(`${catalog.length.toLocaleString('es-ES')} productos importados.`, 'ok');$('catalogDate').textContent=`Importación: ${new Date(meta.lastSync).toLocaleString('es-ES')}`;toast(`Importados ${catalog.length.toLocaleString('es-ES')} productos.`);if($('searchInput').value.trim())runSearch();}
+    function readFileAsText(file){
+      if(file && typeof file.text==='function') return file.text();
+      return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result||''));reader.onerror=()=>reject(new Error('iOS no ha podido leer el archivo. Guarda la copia en Archivos e inténtalo de nuevo.'));reader.readAsText(file);});
+    }
+    function persistRestoredData(){
+      const writes=[[DIARY_KEY,diary],[GOALS_KEY,goals],[CUSTOM_KEY,customProducts],[META_KEY,meta],[PROFILE_KEY,personProfile],[CLOSED_KEY,closedDays],[THEME_KEY,appTheme]];
+      if(Array.isArray(catalog)&&catalog.length) writes.push([CATALOG_KEY,catalog]);
+      const failed=[];
+      for(const [key,value] of writes){if(!save(key,value))failed.push(key);}
+      // Read back core keys: a successful UI update is not enough if iOS rejected storage.
+      for(const [key,value] of writes.filter(([k])=>k!==CATALOG_KEY)){const read=readStored(key,null);if(read===null)failed.push(key+' (verificación)');}
+      return [...new Set(failed)];
+    }
     async function processJSONFile(file,mode){
       if(!file)return;
       try{
-        const data=JSON.parse(await file.text());
+        const rawText=await readFileAsText(file);
+        let data; try{data=JSON.parse(rawText);}catch{throw new Error('El archivo no es un JSON válido. Usa la copia .json descargada desde NutriDía, no un archivo HTML ni una vista previa.');}
         if(mode==='catalog'){importProducts(data);}
         else{
           if(!data || (!String(data.format||'').startsWith('nutridia-local-backup') && data.format!=='leto-backup-v1' && !data.diary))throw new Error('No parece una copia de seguridad de NutriDía.');
@@ -334,11 +348,12 @@
           if(data.closedDays && typeof data.closedDays==='object')closedDays=data.closedDays;
           if(data.appTheme)appTheme=data.appTheme;
           if(data.currentDay && /^\d{4}-\d{2}-\d{2}$/.test(data.currentDay))currentDay=data.currentDay;
-          save(DIARY_KEY,diary);save(GOALS_KEY,goals);save(CUSTOM_KEY,customProducts);if(catalog.length)save(CATALOG_KEY,catalog);save(META_KEY,meta);save(PROFILE_KEY,personProfile);save(CLOSED_KEY,closedDays);save(THEME_KEY,appTheme);
+          const failed=persistRestoredData();
           $('dayPicker').value=currentDay;applyProfileForm();setTheme(appTheme,false);renderAll();updateCatalogBrowserCount();
+          if(failed.length) throw new Error('La copia se ha leído, pero iOS no ha confirmado el guardado de: '+failed.join(', ')+'. Comprueba el espacio disponible y vuelve a importar.');
           setStatus(catalog.length?`${catalog.length.toLocaleString('es-ES')} productos de la copia disponibles.`:'Copia personal restaurada.','ok');
-          if($('localSaveStatus'))$('localSaveStatus').textContent=`Copia restaurada correctamente el ${new Date().toLocaleString('es-ES')}.`;
-          toast('Perfil, meta energética, historial y registros restaurados correctamente.',5000);
+          if($('localSaveStatus'))$('localSaveStatus').textContent=`Copia restaurada y guardada en este acceso el ${new Date().toLocaleString('es-ES')}.`;
+          toast('Copia restaurada y guardada en este dispositivo. Cierra y abre NutriDía para comprobarlo.',5000);
         }
       }catch(e){toast(`No se pudo importar: ${e.message}`,5000);}
       finally{if(mode==='catalog')$('importCatalogInput').value='';else $('importBackupInput').value='';}
