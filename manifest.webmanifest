@@ -1,18 +1,22 @@
 {
+  "id": "./",
   "name": "NutriDía",
   "short_name": "NutriDía",
+  "description": "Registro personal de alimentación y seguimiento nutricional",
+  "lang": "es-ES",
+  "dir": "ltr",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#FFFAF7",
   "theme_color": "#FCE7DA",
-  "description": "Registro personal de alimentación y seguimiento nutricional",
+  "categories": ["health", "food", "lifestyle"],
   "icons": [
-    {
-      "src": "icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon-maskable.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }

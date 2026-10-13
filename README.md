@@ -20,3 +20,14 @@ La información personal se guarda en el almacenamiento del navegador para ese d
 ## v11
 - Corrige el calendario mensual en móvil con una cuadrícula de siete columnas y controles de mes centrados.
 - Amplía la selección de temas hasta 15 tonos pastel.
+
+### v12 (versión profesional)
+- Barra de navegación inferior con iconos en móvil (estilo app nativa) y control segmentado en escritorio.
+- Logo vectorial integrado en la cabecera y fecha del día visible.
+- Iconos PNG para la pantalla de inicio del iPhone (apple-touch-icon) y Android, más icono «maskable».
+- Campos a 16 px en móvil para evitar el zoom automático de Safari.
+- Corrección de contrastes (barra de calorías, textos en tono pastel ilegibles).
+- Tarjetas, botones, foco y estados hover/pulsado unificados.
+- Se mantienen las mismas claves de almacenamiento: no se pierde ningún dato.
+
+Archivos a subir a la raíz: index.html, manifest.webmanifest, sw.js, icon.svg, icon-maskable.svg, apple-touch-icon.png, icon-192.png, icon-512.png.

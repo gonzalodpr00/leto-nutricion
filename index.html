@@ -6,9 +6,16 @@
   <meta name="theme-color" content="#F6DFD1">
   <meta name="description" content="Calculadora diaria de calorías y macronutrientes con búsqueda de alimentos y productos de marca.">
   <title>NutriDía · Calculadora nutricional</title>
-  <meta name="app-version" content="11.0.0">
+  <meta name="app-version" content="12.0.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="NutriDía">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="icon" href="icon-192.png" type="image/png" sizes="192x192">
   <style>
     :root{--bg:#FFFAF6;--paper:#fff;--ink:#352820;--muted:#83766D;--line:#EEDFD5;--green:#F6DFD1;--green2:#A95F3C;--lime:#FBEDE4;--protein:#969CE0;--carbs:#E8B969;--fat:#E49A98;--fiber:#8ABBA4;--warn:#a96513;--warnbg:#fff3dd;--okbg:#eaf6ee;--shadow:0 12px 30px rgba(151,68,20,.07)}
     *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #f3a46d;outline-offset:2px}button:disabled{opacity:.5;cursor:wait}.shell{width:min(1060px,100%);margin:0 auto;padding:0 18px 44px}.topbar{background:var(--green);color:var(--ink);padding:18px 0 30px;border-radius:0 0 28px 28px}.topbar-inner{width:min(1060px,100%);margin:auto;padding:0 18px;display:flex;align-items:center;justify-content:space-between;gap:14px}.brand{display:flex;align-items:center;gap:11px}.brand-mark{display:grid;place-items:center;width:43px;height:43px;border-radius:15px;background:var(--lime);color:var(--green2);font-size:24px;font-weight:900;letter-spacing:-1px}.brand-name{font-size:22px;font-weight:850;letter-spacing:-.7px}.brand-sub{font-size:11px;color:var(--green2);letter-spacing:1.5px;text-transform:uppercase}.online-pill{font-size:11px;padding:7px 10px;border:1px solid var(--green2);border-radius:99px;color:var(--green2);white-space:nowrap}.intro{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;width:min(1060px,100%);margin:23px auto 0;padding:0 18px}.eyebrow{margin:0 0 4px;text-transform:uppercase;letter-spacing:1.3px;color:var(--green2);font-weight:750;font-size:10px}.intro h1{font-size:clamp(25px,5vw,34px);line-height:1.08;letter-spacing:-1.1px;margin:0 0 8px}.intro p{margin:0;color:var(--muted);font-size:13px;max-width:570px}.date-wrap{display:flex;flex-direction:column;gap:6px;min-width:135px}.date-wrap label{font-size:10px;color:var(--green2);text-transform:uppercase;letter-spacing:1px}.date-wrap input{width:100%;color:var(--ink);border:0;background:white;padding:10px 11px;border-radius:12px;font-weight:700;font-size:13px}.main{margin-top:-3px}.section{margin-top:19px}.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 11px}.section-title{margin:0;font-size:16px;letter-spacing:-.3px;font-weight:800}.section-desc{font-size:12px;color:var(--muted);margin:3px 0 0}.metric-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}.metric{background:var(--paper);border:1px solid var(--line);border-radius:19px;padding:16px 15px;box-shadow:var(--shadow);min-width:0}.metric-top{display:flex;align-items:center;justify-content:space-between;gap:6px;color:var(--muted);font-size:12px;font-weight:650}.metric-dot{width:9px;height:9px;border-radius:50%;background:var(--green2);flex-shrink:0}.metric-value{font-size:clamp(22px,4vw,31px);font-weight:850;letter-spacing:-1.1px;margin:8px 0 3px;line-height:1.1;overflow-wrap:anywhere}.metric-unit{font-size:12px;color:var(--muted);font-weight:500;letter-spacing:0}.progress-track{height:5px;background:#edf1ec;border-radius:8px;margin:12px 0 7px;overflow:hidden}.progress-fill{height:100%;border-radius:8px;width:0;transition:width .2s}.metric-foot{font-size:10px;color:var(--muted);display:flex;justify-content:space-between;gap:4px}.metric-foot span:last-child{white-space:nowrap}.lower-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.panel{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:17px;box-shadow:var(--shadow);min-width:0}.panel h3{font-size:14px;margin:0;font-weight:800;letter-spacing:-.2px}.panel-kicker{font-size:11px;color:var(--muted);margin:5px 0 0}.macro-layout{display:flex;align-items:center;gap:19px;padding:16px 0 4px}.donut{width:122px;height:122px;border-radius:50%;position:relative;flex-shrink:0;display:grid;place-items:center;background:conic-gradient(#e9ede8 0 100%)}.donut:after{content:"";position:absolute;inset:13px;border-radius:50%;background:var(--paper)}.donut-label{position:relative;z-index:1;text-align:center}.donut-label strong{display:block;font-size:22px;letter-spacing:-.8px}.donut-label span{font-size:10px;color:var(--muted)}.legend{flex:1;display:grid;gap:12px;min-width:0}.legend-item{display:grid;grid-template-columns:9px 1fr auto;gap:8px;align-items:center;font-size:12px}.legend-dot{width:9px;height:9px;border-radius:50%}.legend-name{color:var(--muted)}.legend-value{text-align:right;font-weight:800;white-space:nowrap}.legend-value small{display:block;color:var(--muted);font-weight:500;font-size:10px}.target-edit{border-top:1px solid var(--line);padding-top:12px;margin-top:14px}.target-edit summary{font-size:12px;color:var(--green2);font-weight:750;cursor:pointer;list-style:none;display:flex;justify-content:space-between}.target-edit summary::-webkit-details-marker{display:none}.target-edit summary:after{content:"＋"}.target-edit[open] summary:after{content:"−"}.target-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:13px}.field{display:flex;flex-direction:column;gap:5px;min-width:0}.field label{font-size:11px;color:var(--muted);font-weight:650}.field input,.field select,.search-input,.command-input{width:100%;min-width:0;min-height:43px;padding:10px 12px;border:1px solid #dce5dc;border-radius:12px;background:#fbfcfa;color:var(--ink)}.field .hint{font-size:10px;color:var(--muted)}.btn{border:0;border-radius:12px;padding:11px 14px;font-weight:750;font-size:12px;display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:transform .12s,background .12s}.btn:active{transform:scale(.98)}.btn-primary{background:var(--green2);color:#fff}.btn-primary:hover{filter:brightness(.96)}.btn-soft{background:var(--lime);color:var(--green2)}.btn-line{background:#fff;color:var(--green2);border:1px solid var(--line)}.btn-danger{background:#fff0ee;color:#a33f38}.btn-small{padding:8px 10px;font-size:11px;border-radius:10px}.search-panel{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:17px;box-shadow:var(--shadow)}.search-row{display:flex;gap:8px;margin-top:14px}.search-row .search-input{flex:1}.search-input{min-height:47px;font-size:15px}.search-hint{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin:9px 1px 0;color:var(--muted);font-size:11px}.search-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.meal-select{padding:8px 9px;border:1px solid var(--line);border-radius:10px;background:#fbfcfa;color:var(--ink);font-size:12px}.results{display:grid;gap:8px;margin-top:14px}.product-result{padding:12px;border:1px solid var(--line);border-radius:15px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center}.product-name{font-size:13px;font-weight:800;line-height:1.28}.product-meta{color:var(--muted);font-size:10px;margin-top:4px}.product-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}.chip{font-size:9px;background:#fff0e4;border-radius:7px;padding:4px 6px;color:#854018}.chip-warn{background:var(--warnbg);color:var(--warn)}.add-controls{display:flex;gap:6px;align-items:center;margin-top:7px}.grams-input{width:76px;min-height:35px;text-align:right;padding:7px 8px;border:1px solid var(--line);border-radius:9px;background:#fbfcfa;font-size:12px}.result-right{text-align:right;min-width:78px}.result-kcal{font-size:16px;font-weight:850;letter-spacing:-.3px}.result-unit{font-size:10px;color:var(--muted)}.no-results{font-size:12px;color:var(--muted);padding:15px;border:1px dashed #cfdacf;border-radius:12px}.add-manual-toggle{margin-top:12px}.manual-panel{display:none;border-top:1px solid var(--line);margin-top:15px;padding-top:15px}.manual-panel.open{display:block}.manual-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.manual-grid .field:first-child{grid-column:span 2}.manual-grid .field:nth-child(2){grid-column:span 2}.form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}.diary-toolbar{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.diary-toolbar .btn{white-space:nowrap}.diary-card{background:var(--paper);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:var(--shadow)}.diary-top{padding:15px 17px;display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid var(--line)}.diary-count{font-size:11px;color:var(--muted)}.meal-group + .meal-group{border-top:1px solid var(--line)}.meal-heading{display:flex;justify-content:space-between;align-items:center;padding:12px 17px;background:#fafbf8;font-size:11px;font-weight:800}.meal-heading span:last-child{color:var(--muted);font-weight:600}.entry{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:13px 17px;border-top:1px solid #f0f2ee;align-items:center}.entry:first-child{border-top:0}.entry-title{font-size:13px;font-weight:780;line-height:1.3}.entry-sub{font-size:10px;color:var(--muted);margin-top:4px}.entry-bottom{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.macro-mini{font-size:10px;background:#fff0e4;border-radius:6px;padding:3px 6px;color:#854018}.entry-controls{display:flex;align-items:center;justify-content:flex-end;gap:7px}.entry-weight{display:flex;align-items:center;gap:5px}.entry-weight input{width:69px;min-height:35px;border:1px solid var(--line);border-radius:9px;text-align:right;padding:5px 7px;font-size:12px}.entry-kcal{font-size:14px;font-weight:850;text-align:right;white-space:nowrap}.entry-kcal small{display:block;font-size:10px;color:var(--muted);font-weight:500}.icon-btn{width:31px;height:31px;border:1px solid var(--line);background:white;border-radius:9px;color:#748178;font-size:17px;display:grid;place-items:center}.empty{padding:30px 18px;text-align:center}.empty-icon{margin:0 auto 11px;width:43px;height:43px;display:grid;place-items:center;border-radius:14px;background:#fff0e4;font-size:21px}.empty strong{display:block;font-size:14px}.empty p{font-size:12px;color:var(--muted);max-width:300px;margin:6px auto 0}.quality-note{border-radius:14px;background:#fff0e4;padding:12px 14px;color:#56665c;font-size:11px;line-height:1.5}.quality-note strong{color:var(--green)}.command-panel{background:var(--green);color:white;border-radius:20px;padding:17px;box-shadow:var(--shadow)}.command-head{display:flex;align-items:flex-start;gap:11px}.command-avatar{width:39px;height:39px;border-radius:13px;background:var(--lime);display:grid;place-items:center;color:var(--green);font-weight:900;font-size:19px;flex-shrink:0}.command-panel h3{margin:1px 0 4px;font-size:15px}.command-panel p{margin:0;font-size:11px;color:#c6d8cf;line-height:1.5}.command-row{display:flex;gap:8px;margin-top:14px}.command-input{flex:1;background:white;border:0;min-height:44px}.command-help{margin-top:9px!important;font-size:10px!important}.command-help code{color:#e6f5d0;background:#244b3a;border-radius:5px;padding:3px 5px}.utility-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.file-label{display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer}.file-label input{display:none}.status-line{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-top:12px;font-size:10px;color:var(--muted)}.status-dot{width:7px;height:7px;border-radius:50%;background:#a9b6aa}.status-dot.ok{background:#50a36b}.status-dot.warn{background:#e4a747}.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));z-index:1000;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#172b22;color:white;padding:12px 16px;border-radius:13px;box-shadow:0 10px 35px rgba(0,0,0,.18);font-size:12px;max-width:min(90vw,450px);transition:.2s;text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}.footnote{margin-top:18px;padding:0 3px;color:var(--muted);font-size:10px;line-height:1.55}.footnote a{color:var(--green2);text-decoration:underline;text-underline-offset:2px}.hidden{display:none!important}
@@ -33,31 +40,125 @@
     /* Calendario de seguimiento: cuadrícula real de siete columnas, optimizada para iPhone */
     .calendar-card{min-width:0;overflow:hidden}.calendar-card>.section-head{align-items:flex-start;gap:12px;flex-wrap:wrap}.calendar-card .section-head>div:first-child{flex:1 1 100%;min-width:0}.calendar-controls{display:grid;grid-template-columns:38px minmax(0,1fr) 38px;align-items:center;gap:7px;width:100%;max-width:330px;margin-left:auto}.calendar-controls strong{text-align:center;text-transform:capitalize;font-size:14px;line-height:1.25;overflow-wrap:anywhere}.calendar-controls .btn{min-width:38px;min-height:38px;padding:6px;font-size:20px}.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;width:100%;margin:15px 0 12px;align-items:stretch}.calendar-weekday{display:grid;place-items:center;min-width:0;padding:5px 0;color:var(--muted);font-size:11px;font-weight:800}.calendar-day{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0;min-height:39px;padding:4px 1px;border:1px solid transparent;border-radius:11px;background:var(--lime);color:var(--ink);font-size:13px;line-height:1.1}.calendar-day .num{font-weight:750}.calendar-day .mark{font-size:10px;line-height:1;min-height:10px}.calendar-day.empty-cell{background:transparent;border-color:transparent;pointer-events:none}.calendar-day.selected{border-color:var(--green2);box-shadow:inset 0 0 0 1px var(--green2)}.calendar-day.ok{background:#E4F4E8;color:#236A3B}.calendar-day.bad{background:#FBE5E4;color:#A83B3B}.calendar-day.pending{background:#FFF0D7;color:#8B641E}.calendar-legend{display:flex;flex-wrap:wrap;gap:8px 14px;color:var(--muted);font-size:11px}.calendar-legend span{white-space:nowrap}
     @media(max-width:650px){.calendar-card{padding:14px}.calendar-grid{gap:4px}.calendar-day{min-height:37px;border-radius:9px;font-size:12px}.calendar-day .mark{font-size:9px}.calendar-controls{max-width:none}.calendar-controls strong{font-size:13px}}
+    /* ===== v12 · Sistema visual profesional ===== */
+    :root{--radius:20px;--radius-sm:12px;--hair:rgba(60,40,30,.08);--shadow:0 1px 2px rgba(40,25,15,.04),0 8px 24px rgba(40,25,15,.05);--shadow-lg:0 2px 4px rgba(40,25,15,.05),0 18px 40px rgba(40,25,15,.08);--ok:#2E7D4F;--bad:#B23B3B;--nav-h:64px}
+    body{font:15px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text","Inter","Segoe UI",Roboto,Helvetica,Arial,sans-serif;letter-spacing:-.005em;padding-bottom:env(safe-area-inset-bottom)}
+    .metric-value,.result-kcal,.entry-kcal,.history-kcal,.legend-value,.donut-label strong,.calendar-day .num{font-variant-numeric:tabular-nums}
+    /* Cabecera */
+    .topbar{position:relative;background:linear-gradient(180deg,var(--green) 0%,var(--lime) 100%);padding:calc(14px + env(safe-area-inset-top)) 0 26px;border-radius:0 0 30px 30px}
+    .brand-logo{width:42px;height:42px;border-radius:12px;display:block;box-shadow:0 4px 12px rgba(80,45,25,.12)}
+    .brand-logo rect{fill:var(--paper)}.brand-logo path{fill:var(--green2)}
+    .brand-name{font-size:20px;font-weight:800;letter-spacing:-.5px;line-height:1.1}
+    .brand-sub{font-size:10px;font-weight:700;letter-spacing:1.4px;margin-top:2px}
+    .online-pill{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:650;padding:7px 11px;border:0;background:rgba(255,255,255,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:var(--ink)}
+    .online-pill:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green2)}
+    .intro{margin-top:22px}
+    .intro h1{font-weight:800;letter-spacing:-1.2px}
+    .intro .today-label{margin:0 0 6px;font-size:12px;font-weight:700;color:var(--green2);letter-spacing:.2px}
+    .date-wrap input{background:rgba(255,255,255,.85);box-shadow:var(--shadow);min-height:44px}
+    /* Navegación */
+    .tabbar{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;width:min(620px,calc(100% - 36px));margin:-22px auto 18px;padding:5px;border:1px solid var(--hair);border-radius:16px;background:rgba(255,255,255,.88);backdrop-filter:saturate(1.6) blur(16px);-webkit-backdrop-filter:saturate(1.6) blur(16px);box-shadow:var(--shadow-lg)}
+    .tab-btn{display:flex;align-items:center;justify-content:center;gap:7px;padding:10px 6px;border-radius:12px;font-size:13px;font-weight:700;color:var(--muted);min-height:44px;transition:background .15s,color .15s}
+    .tab-btn svg{width:18px;height:18px;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+    .tab-btn[aria-selected="true"]{background:var(--lime);color:var(--green2);box-shadow:none}
+    .tab-btn:hover:not([aria-selected="true"]){background:rgba(0,0,0,.03);color:var(--ink)}
+    /* Tarjetas */
+    .metric,.panel,.search-panel,.diary-card,.profile-card{border:1px solid var(--hair);border-radius:var(--radius);box-shadow:var(--shadow);background:var(--paper)}
+    .profile-card .profile-card{box-shadow:none;background:var(--lime);border-color:transparent}
+    .section{margin-top:22px}.section-title{font-size:17px;font-weight:800;letter-spacing:-.35px}.section-desc{font-size:12.5px}
+    .metric-top{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px}
+    .metric-value{font-weight:800}
+    .metric:first-child{background:linear-gradient(145deg,var(--paper) 0%,var(--lime) 100%)}
+    .progress-track{height:7px;background:rgba(0,0,0,.055)}
+    .metric-foot{font-size:11px}
+    .panel h3,.profile-card h3{font-size:15px;font-weight:800;letter-spacing:-.25px}
+    .donut:after{inset:15px}
+    /* Controles */
+    .btn{min-height:42px;border-radius:12px;font-size:13px;font-weight:700;letter-spacing:-.1px;transition:transform .12s,filter .15s,background .15s,box-shadow .15s}
+    .btn-small{min-height:36px;font-size:12px}
+    .btn-primary{background:var(--green2);box-shadow:0 4px 12px rgba(60,35,20,.14)}
+    .btn-soft{background:var(--lime)}
+    .btn-line{border-color:var(--hair);background:var(--paper)}
+    .btn-line:hover{background:var(--lime)}
+    .field input,.field select,.search-input,.command-input,.meal-select,.grams-input,.entry-weight input{border:1px solid rgba(60,40,30,.13);background:var(--paper);transition:border-color .15s,box-shadow .15s}
+    .field input:focus,.field select:focus,.search-input:focus,.meal-select:focus,.grams-input:focus,.entry-weight input:focus{outline:none;border-color:var(--green2);box-shadow:0 0 0 4px var(--lime)}
+    button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--green2);outline-offset:2px}
+    .meal-select{min-height:38px;font-weight:650}
+    /* Listas */
+    .product-result{border-color:var(--hair);transition:border-color .15s,box-shadow .15s}
+    .product-result:hover{border-color:rgba(60,40,30,.18);box-shadow:var(--shadow)}
+    .chip,.macro-mini{background:var(--lime);color:var(--green2);font-weight:650}
+    .chip-warn{background:var(--warnbg);color:var(--warn)}
+    .meal-heading{background:var(--lime);text-transform:uppercase;letter-spacing:.6px;font-size:11px}
+    .entry{border-top-color:var(--hair)}
+    .icon-btn{border-color:var(--hair);transition:background .15s,color .15s}.icon-btn:hover{background:#fff0ee;color:var(--bad)}
+    .history-item{border-color:var(--hair);transition:border-color .15s,box-shadow .15s,transform .12s}
+    .history-item:hover{border-color:rgba(60,40,30,.18);box-shadow:var(--shadow)}
+    .history-item:active{transform:scale(.995)}
+    .history-kcal{color:var(--green2)}
+    .history-reason{display:block;margin-top:5px;font-size:11px;color:var(--bad)}
+    .day-status.ok{color:var(--ok)}.day-status.bad{color:var(--bad)}
+    .empty-icon{background:var(--lime);color:var(--green2)}
+    .no-results{border-color:rgba(60,40,30,.15)}
+    .quality-note{background:var(--lime);color:var(--ink);opacity:.92}
+    .quality-note strong{color:var(--green2)}
+    .goal-summary-item strong{color:var(--green2)}
+    .theme-choice{border-color:var(--hair);min-height:44px}
+    .theme-choice span{box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+    .utility-details summary,.target-edit summary{color:var(--green2)}
+    .calendar-day{transition:transform .1s}.calendar-day:active{transform:scale(.94)}
+    .toast{background:rgba(30,22,18,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:14px;font-weight:600}
+    .footnote{font-size:11px}
+    .btn{white-space:nowrap}.date-wrap label{white-space:nowrap}
+    .lower-grid,.lower-grid.active-screen{grid-template-columns:1fr}
+    /* Móvil: barra inferior tipo app nativa */
+    @media(max-width:650px){
+      body{padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 12px)}
+      .tabbar{position:fixed;top:auto;left:0;right:0;bottom:0;width:100%;margin:0;padding:6px 8px calc(6px + env(safe-area-inset-bottom));border-radius:0;border:0;border-top:1px solid var(--hair);box-shadow:0 -6px 24px rgba(40,25,15,.06);gap:2px}
+      .tab-btn{flex-direction:column;gap:3px;padding:6px 2px;font-size:10.5px;font-weight:650;min-height:50px;border-radius:12px;line-height:1.1}
+      .tab-btn svg{width:22px;height:22px}
+      .tab-btn[aria-selected="true"]{background:transparent;color:var(--green2)}
+      .tab-btn[aria-selected="true"] svg{stroke-width:2.3}
+      .intro{margin-top:16px}.topbar{padding-bottom:22px}
+      .main{margin-top:6px}
+      .metric-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+      .metric-grid .metric:first-child{grid-column:1/-1}
+      .metric-grid .metric:not(:first-child){padding:12px 11px}
+      .metric-grid .metric:not(:first-child) .metric-value{font-size:21px}
+      .metric-grid .metric:not(:first-child) .metric-top{font-size:10px;letter-spacing:.3px}
+      .metric-grid .metric:not(:first-child) .metric-foot span:first-child{display:none}
+      .date-wrap{max-width:none}
+      .metric-grid .metric:first-child .metric-value{font-size:34px}
+      /* 16px evita el zoom automático de Safari al enfocar campos */
+      .field input,.field select,.search-input,.command-input,.meal-select,.grams-input,.entry-weight input,.date-wrap input{font-size:16px}
+      .toast{bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 16px)}
+    }
+    @media(max-width:390px){.tab-btn{font-size:10px}}
 </style>
 </head>
 <body>
   <header class="topbar">
     <div class="topbar-inner">
-      <div class="brand"><div class="brand-mark">N</div><div><div class="brand-name">NutriDía</div><div class="brand-sub">Nutrición personal</div></div></div>
+      <div class="brand"><svg class="brand-logo" viewBox="0 0 1024 1024" aria-hidden="true"><rect width="1024" height="1024" rx="230"/><path d="M303 274H427L598 531V274H722V750H598L427 493V750H303Z"/></svg><div><div class="brand-name">NutriDía</div><div class="brand-sub">Nutrición personal</div></div></div>
       <div class="online-pill" id="headerStatus">Preparando catálogo…</div>
     </div>
     <div class="intro">
-      <div><p class="eyebrow">Tu registro diario</p><h1>Come con datos.<br>Decide con criterio.</h1><p>Introduce cada alimento y su peso. NutriDía calcula las calorías, los macros y cómo se distribuyen durante el día.</p></div>
+      <div><p class="today-label" id="todayLabel"></p><h1>Come con datos.<br>Decide con criterio.</h1><p>Introduce cada alimento y su peso. NutriDía calcula las calorías, los macros y cómo se distribuyen durante el día.</p></div>
       <div class="date-wrap"><label for="dayPicker">Día que estás registrando</label><input id="dayPicker" type="date"></div>
     </div>
   </header>
 
   <nav class="tabbar" role="tablist" aria-label="Secciones de NutriDía">
-    <button class="tab-btn" type="button" role="tab" aria-selected="true" data-tab="balance">Balance diario</button>
-    <button class="tab-btn" type="button" role="tab" aria-selected="false" data-tab="comidas">Comidas</button>
-    <button class="tab-btn" type="button" role="tab" aria-selected="false" data-tab="historial">Historial</button>
-    <button class="tab-btn" type="button" role="tab" aria-selected="false" data-tab="perfil">Mi perfil</button>
+    <button class="tab-btn" type="button" role="tab" aria-selected="true" data-tab="balance"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V11M10 19V5M16 19v-6M22 19H2"/></svg><span>Balance</span></button>
+    <button class="tab-btn" type="button" role="tab" aria-selected="false" data-tab="comidas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v8M4 3v5a3 3 0 0 0 6 0V3M7 11v10M17 21V3c-2.5 1.5-4 4.5-4 8h4"/></svg><span>Comidas</span></button>
+    <button class="tab-btn" type="button" role="tab" aria-selected="false" data-tab="historial"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4M9 15l2 2 4-4"/></svg><span>Historial</span></button>
+    <button class="tab-btn" type="button" role="tab" aria-selected="false" data-tab="perfil"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span>Mi perfil</span></button>
   </nav>
   <main class="shell main">
     <section class="section active-screen" data-screen="balance" aria-labelledby="dailyHeading">
       <div class="section-head"><div><h2 class="section-title" id="dailyHeading">Tu día, en números</h2><p class="section-desc">Los totales se recalculan al cambiar cualquier cantidad.</p></div><button class="btn btn-line btn-small" id="clearDayBtn" type="button">Vaciar día</button></div>
       <div class="metric-grid">
-        <article class="metric"><div class="metric-top"><span>Calorías</span><span class="metric-dot"></span></div><div class="metric-value" id="totalKcal">0 <span class="metric-unit">kcal</span></div><div class="progress-track"><div class="progress-fill" id="kcalProgress" style="background:var(--green)"></div></div><div class="metric-foot"><span id="kcalLeft">Calcula tu meta en Mi perfil</span><span id="kcalPercent">—</span></div></article>
+        <article class="metric"><div class="metric-top"><span>Calorías</span><span class="metric-dot"></span></div><div class="metric-value" id="totalKcal">0 <span class="metric-unit">kcal</span></div><div class="progress-track"><div class="progress-fill" id="kcalProgress" style="background:var(--green2)"></div></div><div class="metric-foot"><span id="kcalLeft">Calcula tu meta en Mi perfil</span><span id="kcalPercent">—</span></div></article>
         <article class="metric"><div class="metric-top"><span>Proteínas</span><span class="metric-dot" style="background:var(--protein)"></span></div><div class="metric-value" id="totalProtein">0 <span class="metric-unit">g</span></div><div class="progress-track"><div class="progress-fill" id="proteinProgress" style="background:var(--protein)"></div></div><div class="metric-foot"><span id="proteinLeft">Consumo registrado</span><span id="proteinPercent">—</span></div></article>
         <article class="metric"><div class="metric-top"><span>Hidratos</span><span class="metric-dot" style="background:var(--carbs)"></span></div><div class="metric-value" id="totalCarbs">0 <span class="metric-unit">g</span></div><div class="progress-track"><div class="progress-fill" id="carbsProgress" style="background:var(--carbs)"></div></div><div class="metric-foot"><span id="carbsLeft">Consumo registrado</span><span id="carbsPercent">—</span></div></article>
         <article class="metric"><div class="metric-top"><span>Grasas</span><span class="metric-dot" style="background:var(--fat)"></span></div><div class="metric-value" id="totalFat">0 <span class="metric-unit">g</span></div><div class="progress-track"><div class="progress-fill" id="fatProgress" style="background:var(--fat)"></div></div><div class="metric-foot"><span id="fatLeft">Consumo registrado</span><span id="fatPercent">—</span></div></article>
@@ -87,7 +188,7 @@
 
     <section class="section active-screen" data-screen="comidas" aria-labelledby="diaryHeading">
       <div class="section-head"><div><h2 id="diaryHeading" class="section-title">Registro de alimentos</h2><p class="section-desc">Cambia los gramos cuando lo necesites; los totales se actualizarán automáticamente.</p></div></div>
-      <div class="diary-card"><div class="diary-top"><strong style="font-size:13px">Alimentos del día</strong><span id="diaryCount" class="diary-count">0 alimentos</span></div><div id="entryList"></div><div id="emptyDiary" class="empty"><div class="empty-icon">＋</div><strong>Tu registro está vacío</strong><p>Busca tu primer producto arriba y añádelo con su peso consumido.</p></div></div>
+      <div class="diary-card"><div class="diary-top"><strong style="font-size:13px">Alimentos del día</strong><span id="diaryCount" class="diary-count">0 alimentos</span></div><div id="entryList"></div><div id="emptyDiary" class="empty"><div class="empty-icon">＋</div><strong>Tu registro está vacío</strong><p>Busca tu primer producto abajo y añádelo con su peso consumido.</p></div></div>
     </section>
 
     <section class="section" data-screen="comidas" aria-labelledby="searchHeading">
@@ -166,7 +267,7 @@
       <div class="profile-card"><h3>Base de datos de alimentos</h3><p id="profileCatalogStatus">NutriDía busca en el catálogo guardado, en MercaAPI y en Open Food Facts. Open Food Facts es una base colaborativa de productos envasados; la cobertura y exactitud dependen de los datos aportados por sus usuarios.</p><div class="profile-actions"><button id="syncBtn" class="btn btn-primary" type="button">Actualizar base de datos</button></div><div class="status-line" style="margin-top:10px"><span class="status-dot" id="statusDot"></span><span id="catalogStatus">Preparando catálogo…</span><span>·</span><span id="catalogDate">Sin sincronización</span></div></div>
 <div class="profile-card" id="localDataCard"><h3>Guardar y recuperar mis datos</h3><p>Tu perfil, diario, tema, historial y alimentos se guardan automáticamente en este navegador. Si cierras Safari y vuelves a abrir esta misma dirección, se cargará la información guardada. Para recuperarla si borras los datos del sitio o cambias de iPhone, guarda una copia en Archivos o iCloud Drive y restáurala aquí.</p><div class="profile-actions"><button class="btn btn-primary" id="backupBtn" type="button">Guardar copia de seguridad</button><label class="btn btn-line file-label">Recuperar perfil y datos<input id="importBackupInput" type="file" accept=".json,application/json"></label></div><p id="localSaveStatus" class="panel-kicker" aria-live="polite" style="margin-top:10px">Guardado automático local activado. Al volver a abrir esta misma web en Safari, se cargará el perfil guardado.</p></div>
       <details class="utility-details profile-card"><summary>Herramientas avanzadas</summary><div class="utility-row"><button class="btn btn-line btn-small" id="csvBtn" type="button">Exportar día CSV</button><label class="btn btn-line btn-small file-label">Importar catálogo<input id="importCatalogInput" type="file" accept=".json,application/json"></label></div></details>
-      <div class="profile-card"><h3>Privacidad y almacenamiento</h3><p><strong>Perfil, meta energética, historial y diario se guardan automáticamente en este navegador.</strong> No se publican en GitHub Pages. Las búsquedas de productos sí se envían a fuentes externas. Cerrar Safari no borra los datos; eliminar los datos del sitio sí puede hacerlo. Si borras los datos del sitio o cambias de dispositivo, puedes recuperar tus datos con la copia de seguridad. Guarda una copia periódicamente en Archivos o iCloud Drive.</p><p class="panel-kicker">Versión 10 · Guardado local automático</p></div>
+      <div class="profile-card"><h3>Privacidad y almacenamiento</h3><p><strong>Perfil, meta energética, historial y diario se guardan automáticamente en este navegador.</strong> No se publican en GitHub Pages. Las búsquedas de productos sí se envían a fuentes externas. Cerrar Safari no borra los datos; eliminar los datos del sitio sí puede hacerlo. Si borras los datos del sitio o cambias de dispositivo, puedes recuperar tus datos con la copia de seguridad. Guarda una copia periódicamente en Archivos o iCloud Drive.</p><p class="panel-kicker">Versión 12 · Guardado local automático</p></div>
       <div class="quality-note"><strong>Precisión:</strong> los datos dependen de una API independiente. Comprueba la etiqueta del envase cuando necesites exactitud; NutriDía no inventará valores nutricionales que falten.</div>
     </section>
 
@@ -264,7 +365,8 @@
         host.append(section);
       }
     }
-    function renderAll(){renderSummary();renderDiary();renderHistory();syncProfileGoals();renderBalanceMeals();renderGoalSummary();renderCalendar();}
+    function renderDateLabel(){const el=$('todayLabel');if(!el)return;const d=new Date(currentDay+'T12:00:00');const label=d.toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'});const nice=label.charAt(0).toUpperCase()+label.slice(1);el.textContent=currentDay===todayLocal()?`Hoy · ${label}`:nice;}
+    function renderAll(){renderDateLabel();renderSummary();renderDiary();renderHistory();syncProfileGoals();renderBalanceMeals();renderGoalSummary();renderCalendar();}
     function nutritionBadge(p) { if(!hasSomeNutrition(p)) return '<span class="chip chip-warn">Sin tabla nutricional</span>'; if(p.quality==='declarado') return '<span class="chip">Origen declarado por la fuente</span>'; if(p.quality==='estimado') return '<span class="chip chip-warn">Dato estimado</span>'; return '<span class="chip chip-warn">Verificar con la etiqueta</span>'; }
     function searchLocal(q){const norm=normalise(q);if(!norm)return[];const terms=norm.split(/\s+/).filter(Boolean);const all=[...customProducts,...catalog];const seen=new Set();return all.filter(p=>p.name&&p.isFood!==false&&terms.every(t=>normalise(`${p.name} ${p.brand} ${p.category}`).includes(t))).filter(p=>{const id=String(p.id);if(seen.has(id))return false;seen.add(id);return true;}).sort((a,b)=>{const aa=normalise(a.name),bb=normalise(b.name);const score=x=>x===norm?0:x.startsWith(norm)?1:x.includes(norm)?2:3;return score(aa)-score(bb)||aa.localeCompare(bb,'es');}).slice(0,16);}
     function renderSearchResults(items,message='') {
